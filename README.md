@@ -4,7 +4,7 @@ I have been looking for a simple library of functions in C to manage date and ti
 but could not find any that would meet my needs.
 
 That's the reason why I wrote this minimal set of functions, comparable to what DateTime offers for .Net
-(DateTimeOffset is useless as it does not handle daylight saving time.)
+(btw, DateTimeOffset in .Net is useless as it does not handle daylight saving time.)
 
 This library is a tool box that facilitates the management of dates and times. It is a superset of lower level POSIX functions.
 The functions of this toolbox manipulate instants (points) in time expressed as a date and time of day, in Gregorian calendar.
