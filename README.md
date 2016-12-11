@@ -43,4 +43,4 @@ Use Makefile as an example for compilation.
 File dates_tu_check.c implements unit tests using check as a framework.
 
 
-Please read dates.h for more details.
+Please read dates.pdf for more details.
