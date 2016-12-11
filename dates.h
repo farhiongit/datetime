@@ -13,7 +13,8 @@
 /// This allows compatible access to low level POSIX functions, such as strftime() or strptime() (see man page of mktime()).
 ///
 /// However, objects \p struct \p tm should be considered as abstract data types, and should not be initializeed by hand.
-/// Instants should rather be initialized with tm_makelocal(), tm_makeutc(), tm_makenow() and tm_maketoday() instead.
+/// Instants should be initialized with tm_makelocal(), tm_makeutc(), tm_makenow() and tm_maketoday() instead.
+/// The use of these functions is compulsory, as well as easier than handling with \p struct \p tm.
 ///
 /// Once initialized, tm_set(), tm_setdatefromstring(), tm_settimefromstring() can be used to modify the instant.
 ///
@@ -573,8 +574,9 @@ int tm_getnumberofsecondsinlocalday (int year, tm_month month, int day);
 ///@name Calendar properties
 ///@{
 
-/// Serializes the nstant of time to a binary value that subsequently can be used to recreate the instant of time.
+/// Serializes the instant of time to a binary value that subsequently can be used to recreate the instant of time.
 /// This binary value is suitable for database recording.
+/// It identifies an instant of time unambiguously, whatever the representation (local time or UTC).
 /// @param [in] date Broken-down time structure, either in local timezone or UTC representation
 /// @returns Binary representation of instant (point in time).
 time_t tm_tobinary (struct tm date);
