@@ -8,16 +8,22 @@ CFLAGS  = $(TEMP) $(DEBUG) $(WARNINGS) $(COMPILE) $(PROC_OPT)
 LDFLAGS  = -lm
 
 .PHONY: all
-all: exe doc utest
+all: exe lib doc utest
 
 .PHONY: exe
 exe: dates
 
+.PHONY: lib
+lib: libtm.a
+
 .PHONY: doc
 doc: dates.doc/dates.pdf
 
-dates: dates.o datesTU.o
-	$(CC) $(CFLAGS) -o "$@" $^ $(LDFLAGS)
+dates: libtm.a datesTU.o
+	$(CC) $(CFLAGS) -o "$@" datesTU.o $(LDFLAGS) -L. -ltm
+
+libtm.a: dates.o
+	ar rcs "$@" $^
 
 dates.doc/dates.pdf: dates.c dates.h dates.doxygen
 	doxygen dates.doxygen
@@ -25,7 +31,7 @@ dates.doc/dates.pdf: dates.c dates.h dates.doxygen
 
 utest: LDFLAGS += -lpthread
 utest: LDFLAGS += -L/usr/lib/llvm-3.2/lib # -lprofile_rt
-utest: dates_tu_check.o dates.o
-	$(CC) $(CFLAGS) $(INCLUDES) -o "$@" $^ -lcheck $(LDFLAGS)
+utest: dates_tu_check.o libtm.a
+	$(CC) $(CFLAGS) $(INCLUDES) -o "$@" $^ -lcheck $(LDFLAGS) -L. -ltm
 	CK_VERBOSITY=verbose ./utest
 #	@LD_LIBRARY_PATH=/usr/lib/llvm-3.2/lib:${LD_LIBRARY_PATH} CK_VERBOSITY=verbose valgrind --leak-check=full --track-origins=yes --show-reachable=yes  --error-limit=no --gen-suppressions=all --log-file=utest_valgrind.log "./$@" || rm "./$@"
