@@ -440,6 +440,7 @@ tm_getdayofyear (struct tm date)
 int
 tm_getisoweek (struct tm date)
 {
+
   /** ISO 8601 week date: The first week of a year (starting on Monday) is :
      - the first week that contains at least 4 days of calendar year.
      - the week that contains the first Thursday of a year.

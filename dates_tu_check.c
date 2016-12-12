@@ -361,6 +361,11 @@ START_TEST (tu_ops_local)
   ck_assert (tm_adddays (&dt, -1) == TM_OK);
   ck_assert (tm_getday (dt) == 26);
   ck_assert (tm_gethours (dt) == 3);
+
+  ck_assert (tm_makelocal (&dt, 2016, TM_MARCH, 14, 9, 0, 0) != TM_ERROR);
+  ck_assert (tm_adddays (&dt, 14) == TM_OK);
+  ck_assert (tm_getday (dt) == 28);
+  ck_assert (tm_gethours (dt) == 9);
 }
 
 END_TEST
@@ -574,6 +579,12 @@ START_TEST (tu_diff_local)
   ck_assert (tm_diffyears (debut, fin) == 1);
   ck_assert (tm_difffullyears (debut, fin) == 0);
   ck_assert (tm_diffisoyears (debut, fin) == 1);
+
+  ck_assert (tm_makelocal (&debut, 2016, TM_MARCH, 14, 9, 0, 0) == TM_OK);
+  ck_assert (tm_makelocal (&fin, 2016, TM_MARCH, 28, 9, 0, 0) == TM_OK);
+
+  ck_assert (tm_difffulldays (debut, fin) == 14);
+  ck_assert (tm_diffseconds (debut, fin) == 335 * 3600);        // 335 hours instaed of 336
 }
 
 END_TEST
@@ -594,6 +605,12 @@ START_TEST (tu_diff_utc)
   ck_assert (tm_diffyears (debut, fin) == 1);
   ck_assert (tm_difffullyears (debut, fin) == 0);
   ck_assert (tm_diffisoyears (debut, fin) == 1);
+
+  ck_assert (tm_makeutc (&debut, 2016, TM_MARCH, 14, 9, 0, 0) == TM_OK);
+  ck_assert (tm_makeutc (&fin, 2016, TM_MARCH, 28, 9, 0, 0) == TM_OK);
+
+  ck_assert (tm_difffulldays (debut, fin) == 14);
+  ck_assert (tm_diffseconds (debut, fin) == 336 * 3600);
 }
 
 END_TEST
