@@ -32,6 +32,6 @@ dates.doc/dates.pdf: dates.c dates.h dates.doxygen
 utest: LDFLAGS += -lpthread
 utest: LDFLAGS += -L/usr/lib/llvm-3.2/lib # -lprofile_rt
 utest: dates_tu_check.o libtm.a
-	$(CC) $(CFLAGS) $(INCLUDES) -o "$@" $^ -lcheck $(LDFLAGS) -L. -ltm
+	$(CC) $(CFLAGS) $(INCLUDES) -o "$@" dates_tu_check.o -lcheck $(LDFLAGS) -L. -ltm
 	CK_VERBOSITY=verbose ./utest
 #	@LD_LIBRARY_PATH=/usr/lib/llvm-3.2/lib:${LD_LIBRARY_PATH} CK_VERBOSITY=verbose valgrind --leak-check=full --track-origins=yes --show-reachable=yes  --error-limit=no --gen-suppressions=all --log-file=utest_valgrind.log "./$@" || rm "./$@"
