@@ -229,6 +229,9 @@ tm_status tm_addseconds (struct tm *date, long int nbSecs);
 /// It takes into account leap years and the number of days in a month.
 ///
 /// Behavior depends on the current representation of the instant of time : in local time representation, adding one day might correspond to adding 23, 24 or 25 hours, depending whether or not there is a daylight saving time change.
+/// In case representation for both indtants of time is local, days including between standard time and daylight saving time count for 23 or 25 hours rather than 24.
+/// I.e., adding 14 days to march the 14th, 9 am, local Paris time, yields march the 28th, 9 am, 2016, that is only 335 hours.
+///
 /// In local time, if adding days results in an hour that is not valid in the resulting day (in case of daylight saving time change from winter to summer rule), an extra hour is added.
 /// For example, the transition from standard time to daylight saving time occurs in the U.S. Pacific Time zone on March 14, 2010, at 2:00 A.M., when the time advances by one hour, to 3:00 A.M.
 /// This hour interval is an invalid time, that is, a time interval that does not exist in this time zone.
@@ -244,8 +247,6 @@ tm_status tm_adddays (struct tm *date, int nbDays);
 /// I.e., adding three months to January, the 31st, yields April, the 30th.
 ///
 /// Behavior depends on the current representation of the instant of time : in local time representation, adding one day might correspond to adding 23, 24 or 25 hours, depending whether or not there is a daylight saving time change.
-/// In case representation for both indtants of time is local, days including between standard time and daylight saving time count for 23 or 25 hours rather than 24.
-/// I.e., adding 14 days to march the 14th, 9 am, local Paris time, yields march the 28th, 9 am, 2016, that is only 335 hours.
 ///
 /// In local time, if adding days results in an hour that is not valid in the resulting day (in case of daylight saving time change from winter to summer rule), an extra hour is added.
 /// For example, the transition from standard time to daylight saving time occurs in the U.S. Pacific Time zone on March 14, 2010, at 2:00 A.M., when the time advances by one hour, to 3:00 A.M.
