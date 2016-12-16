@@ -707,27 +707,35 @@ START_TEST (tu_day_loop)
 {
   struct tm hour;
   struct tm end_of_day;
+  const char *result;
+  char string[8];
 
+  result = "00-01 ;01-02 ;03-04 ;04-05 ;05-06 ;06-07 ;07-08 ;08-09 ;09-10 ;10-11 ;11-12 ;12-13 ;13-14 ;14-15 ;15-16 ;16-17 ;17-18 ;18-19 ;19-20 ;20-21 ;21-22 ;22-23 ;23-24 ;";
   tm_makelocal (&end_of_day, 2016, TM_MARCH, 28, 0, 0, 0);
   for (tm_makelocal (&hour, 2016, TM_MARCH, 27, 0, 0, 0) ; tm_compare (&hour, &end_of_day) < 0 ; tm_addseconds (&hour, 3600))
   {
-    printf ("%02i-%02i%s;", tm_gethours (hour), tm_gethours (hour)+1,tm_isdaylightsavingextrasummertime (hour) ? "A" : tm_isdaylightsavingextrawintertime (hour) ? "B" : " ");
+    sprintf (string, "%02i-%02i%s;", tm_gethours (hour), tm_gethours (hour)+1,tm_isdaylightsavingextrasummertime (hour) ? "A" : tm_isdaylightsavingextrawintertime (hour) ? "B" : " ");
+    ck_assert (strncmp(string, result, 7) == 0);
+    result += 7;
   }
-  printf ("\n");
 
+  result = "00-01 ;01-02 ;02-03 ;03-04 ;04-05 ;05-06 ;06-07 ;07-08 ;08-09 ;09-10 ;10-11 ;11-12 ;12-13 ;13-14 ;14-15 ;15-16 ;16-17 ;17-18 ;18-19 ;19-20 ;20-21 ;21-22 ;22-23 ;23-24 ;";
   tm_makelocal (&end_of_day, 2016, TM_AUGUST, 28, 0, 0, 0);
   for (tm_makelocal (&hour, 2016, TM_AUGUST, 27, 0, 0, 0) ; tm_compare (&hour, &end_of_day) < 0 ; tm_addseconds (&hour, 3600))
   {
-    printf ("%02i-%02i%s;", tm_gethours (hour), tm_gethours (hour)+1,tm_isdaylightsavingextrasummertime (hour) ? "A" : tm_isdaylightsavingextrawintertime (hour) ? "B" : " ");
+    sprintf (string, "%02i-%02i%s;", tm_gethours (hour), tm_gethours (hour)+1,tm_isdaylightsavingextrasummertime (hour) ? "A" : tm_isdaylightsavingextrawintertime (hour) ? "B" : " ");
+    ck_assert (strncmp(string, result, 7) == 0);
+    result += 7;
   }
-  printf ("\n");
 
+  result = "00-01 ;01-02 ;02-03A;02-03B;03-04 ;04-05 ;05-06 ;06-07 ;07-08 ;08-09 ;09-10 ;10-11 ;11-12 ;12-13 ;13-14 ;14-15 ;15-16 ;16-17 ;17-18 ;18-19 ;19-20 ;20-21 ;21-22 ;22-23 ;23-24 ;";
   tm_makelocal (&end_of_day, 2016, TM_OCTOBER, 31, 0, 0, 0);
   for (tm_makelocal (&hour, 2016, TM_OCTOBER, 30, 0, 0, 0) ; tm_compare (&hour, &end_of_day) < 0 ; tm_addseconds (&hour, 3600))
   {
-    printf ("%02i-%02i%s;", tm_gethours (hour), tm_gethours (hour)+1,tm_isdaylightsavingextrasummertime (hour) ? "A" : tm_isdaylightsavingextrawintertime (hour) ? "B" : " ");
+    sprintf (string, "%02i-%02i%s;", tm_gethours (hour), tm_gethours (hour)+1,tm_isdaylightsavingextrasummertime (hour) ? "A" : tm_isdaylightsavingextrawintertime (hour) ? "B" : " ");
+    ck_assert (strncmp(string, result, 7) == 0);
+    result += 7;
   }
-  printf ("\n");
 }
 
 END_TEST
