@@ -290,9 +290,9 @@ tm_getdateintostring (struct tm dt, char *str, size_t max)
 *   CONVERTERS                                       *
 *****************************************************/
 tm_status
-tm_toutc (struct tm * date)
+tm_toutcrepresentation (struct tm * date)
 {
-  if (tm_islocal (*date))
+  if (tm_islocalrepresentation (*date))
   {
     errno = 0;
     time_t local = tm_normalizetolocal (date);
@@ -307,9 +307,9 @@ tm_toutc (struct tm * date)
 }
 
 tm_status
-tm_tolocal (struct tm * date)
+tm_tolocalrepresentation (struct tm * date)
 {
-  if (tm_isutc (*date))
+  if (tm_isutcrepresentation (*date))
   {
     errno = 0;
     time_t utc = tm_normalizetoutc (date);
@@ -329,7 +329,7 @@ tm_tolocal (struct tm * date)
 static time_t
 tm_normalize (struct tm *date)
 {
-  if (tm_isutc (*date))
+  if (tm_isutcrepresentation (*date))
     return tm_normalizetoutc (date);
   else
     return tm_normalizetolocal (date);
@@ -474,13 +474,13 @@ tm_getisoyear (struct tm date)
 }
 
 int
-tm_isutc (struct tm date)
+tm_isutcrepresentation (struct tm date)
 {
-  return (tm_islocal (date) ? 0 : 1);
+  return (tm_islocalrepresentation (date) ? 0 : 1);
 }
 
 int
-tm_islocal (struct tm date)
+tm_islocalrepresentation (struct tm date)
 {
   return (date.tm_zone && strcmp (tm_utctimezone (), date.tm_zone) ? 1 : 0);
 }
@@ -488,7 +488,7 @@ tm_islocal (struct tm date)
 tm_representation
 tm_getrepresentation (struct tm date)
 {
-  return tm_islocal (date) ? TM_LOCAL : TM_UTC;
+  return tm_islocalrepresentation (date) ? TM_LOCAL : TM_UTC;
 }
 
 int
@@ -556,7 +556,7 @@ tm_getsecondsofday (struct tm date)
 tm_status
 tm_set (struct tm * tm, int year, tm_month month, int day, int hour, int min, int sec)
 {
-  if (tm_islocal (*tm))
+  if (tm_islocalrepresentation (*tm))
     return tm_makelocal (tm, year, month, day, hour, min, sec);
   else
     return tm_makeutc (tm, year, month, day, hour, min, sec);
@@ -752,14 +752,14 @@ tm_getintimezone (struct tm date, const char *tz, int *year, tm_month * month, i
   const char *oldtz = getenv ("TZ");
 
   // Switch to UTC
-  tm_toutc (&date);
+  tm_toutcrepresentation (&date);
 
   // Switch to local time in timezone tz
   if (tz)
     setenv ("TZ", tz, 1);
   else
     unsetenv ("TZ");
-  tm_tolocal (&date);
+  tm_tolocalrepresentation (&date);
 
   if (year)
     *year = tm_getyear (date);

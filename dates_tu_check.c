@@ -97,11 +97,11 @@ START_TEST (tu_now)
 
   tm_makenow (&maintenant);
   tm_print (maintenant);
-  ck_assert (tm_islocal (maintenant));
+  ck_assert (tm_islocalrepresentation (maintenant));
   ck_assert (tm_getrepresentation (maintenant) == TM_LOCAL);
-  tm_toutc (&maintenant);
+  tm_toutcrepresentation (&maintenant);
   tm_print (maintenant);
-  ck_assert (tm_isutc (maintenant));
+  ck_assert (tm_isutcrepresentation (maintenant));
   ck_assert (tm_getutcoffset (maintenant) == 0);
   ck_assert (tm_getrepresentation (maintenant) == TM_UTC);
 }
@@ -113,14 +113,14 @@ START_TEST (tu_today)
 
   tm_maketoday (&aujourdhui);
   tm_print (aujourdhui);
-  ck_assert (tm_islocal (aujourdhui));
+  ck_assert (tm_islocalrepresentation (aujourdhui));
   ck_assert (tm_getrepresentation (aujourdhui) == TM_LOCAL);
   ck_assert (tm_gethours (aujourdhui) == 0);
   ck_assert (tm_getminutes (aujourdhui) == 0);
   ck_assert (tm_getseconds (aujourdhui) == 0);
-  tm_toutc (&aujourdhui);
+  tm_toutcrepresentation (&aujourdhui);
   tm_print (aujourdhui);
-  ck_assert (tm_isutc (aujourdhui));
+  ck_assert (tm_isutcrepresentation (aujourdhui));
   ck_assert (tm_getutcoffset (aujourdhui) == 0);
   ck_assert (tm_getrepresentation (aujourdhui) == TM_UTC);
 }
@@ -137,7 +137,7 @@ START_TEST (tu_local)
   ck_assert (tm_makelocal (&dt, 2016, 2, 29, 17, 65, 21) == TM_ERROR);  // Does not exist
   ck_assert (tm_makelocal (&dt, 2016, 3, 27, 2, 12, 21) == TM_ERROR);   // Does not exist (DST change)
   ck_assert (tm_makelocal (&dt, 2016, 10, 30, 2, 22, 21) != TM_ERROR);
-  ck_assert (tm_islocal (dt));
+  ck_assert (tm_islocalrepresentation (dt));
   ck_assert (tm_getrepresentation (dt) == TM_LOCAL);
 }
 
@@ -154,7 +154,7 @@ START_TEST (tu_utc)
   ck_assert (tm_makeutc (&dt, 2016, 2, 29, 17, 65, 21) == TM_ERROR);    // Does not exist
   ck_assert (tm_makeutc (&dt, 2016, 3, 27, 2, 12, 21) != TM_ERROR);
   ck_assert (tm_makeutc (&dt, 2016, 10, 30, 2, 22, 21) != TM_ERROR);
-  ck_assert (tm_isutc (dt));
+  ck_assert (tm_isutcrepresentation (dt));
   ck_assert (tm_getutcoffset (dt) == 0);
   ck_assert (tm_getrepresentation (dt) == TM_UTC);
 }
@@ -165,24 +165,24 @@ START_TEST (tu_set_from_local)
   struct tm dt;
 
   tm_makenow (&dt);
-  ck_assert (tm_islocal (dt));
+  ck_assert (tm_islocalrepresentation (dt));
   ck_assert (tm_set (&dt, 2016, 3, 27, 2, 12, 21) == TM_ERROR);
-  ck_assert (tm_islocal (dt));
+  ck_assert (tm_islocalrepresentation (dt));
   ck_assert (tm_set (&dt, 2012, 12, 31, 23, 59, 59) != TM_ERROR);
-  ck_assert (tm_islocal (dt));
+  ck_assert (tm_islocalrepresentation (dt));
 
   ck_assert (tm_setdatefromstring (&dt, "23/4/1987") != TM_ERROR);
-  ck_assert (tm_islocal (dt));
+  ck_assert (tm_islocalrepresentation (dt));
   ck_assert (tm_setdatefromstring (&dt, "33/4/1987") == TM_ERROR);
   ck_assert (tm_setdatefromstring (&dt, "23/4") == TM_ERROR);
-  ck_assert (tm_islocal (dt));
+  ck_assert (tm_islocalrepresentation (dt));
 
   ck_assert (tm_settimefromstring (&dt, "23:04") != TM_ERROR);
   ck_assert (tm_settimefromstring (&dt, "25:04") == TM_ERROR);
-  ck_assert (tm_islocal (dt));
+  ck_assert (tm_islocalrepresentation (dt));
   ck_assert (tm_settimefromstring (&dt, "33/4/1987") == TM_ERROR);      // date
   ck_assert (tm_settimefromstring (&dt, "23:04:03") != TM_ERROR);
-  ck_assert (tm_islocal (dt));
+  ck_assert (tm_islocalrepresentation (dt));
 }
 
 END_TEST
@@ -190,26 +190,26 @@ START_TEST (tu_set_from_utc)
 {
   struct tm dt;
 
-  tm_toutc (&dt);
-  ck_assert (tm_isutc (dt));
+  tm_toutcrepresentation (&dt);
+  ck_assert (tm_isutcrepresentation (dt));
   ck_assert (tm_set (&dt, 2012, 12, 31, 23, 59, 59) != TM_ERROR);
   ck_assert (tm_set (&dt, 1970, 1, 1, 0, 0, 0) == TM_OK);
-  ck_assert (tm_isutc (dt));
+  ck_assert (tm_isutcrepresentation (dt));
   ck_assert (tm_getutcoffset (dt) == 0);
 
   ck_assert (tm_setdatefromstring (&dt, "23/4/1987") != TM_ERROR);
-  ck_assert (tm_isutc (dt));
+  ck_assert (tm_isutcrepresentation (dt));
   ck_assert (tm_setdatefromstring (&dt, "33/4/1987") == TM_ERROR);      // 33
   ck_assert (tm_setdatefromstring (&dt, "23/4") == TM_ERROR);
-  ck_assert (tm_isutc (dt));
+  ck_assert (tm_isutcrepresentation (dt));
   ck_assert (tm_getutcoffset (dt) == 0);
 
   ck_assert (tm_settimefromstring (&dt, "23:04") != TM_ERROR);
   ck_assert (tm_settimefromstring (&dt, "25:04") == TM_ERROR);  // 25
-  ck_assert (tm_isutc (dt));
+  ck_assert (tm_isutcrepresentation (dt));
   ck_assert (tm_settimefromstring (&dt, "33/4/1987") == TM_ERROR);      // date
   ck_assert (tm_settimefromstring (&dt, "23:04:03") != TM_ERROR);
-  ck_assert (tm_isutc (dt));
+  ck_assert (tm_isutcrepresentation (dt));
   ck_assert (tm_getutcoffset (dt) == 0);
 }
 
@@ -620,7 +620,7 @@ START_TEST (tu_equality)
 
   tm_makenow (&now);
   utcnow = now;
-  tm_toutc (&utcnow);
+  tm_toutcrepresentation (&utcnow);
 
   ck_assert (tm_diffseconds (now, utcnow) == 0);
   ck_assert (tm_compare (&now, &utcnow) == 0);
@@ -681,21 +681,21 @@ START_TEST (tu_serialization)
   struct tm utc;
 
   tm_makeutc (&utc, 2016, TM_JANUARY, 1, 18, 0, 0);
-  tm_isutc (utc);
+  tm_isutcrepresentation (utc);
 
   long int instant = tm_tobinary (utc);
 
   struct tm local;
 
   ck_assert (tm_frombinary (&local, instant) == TM_OK);
-  tm_islocal (local);
+  tm_islocalrepresentation (local);
 
   ck_assert (tm_diffseconds (utc, local) == 0);
   ck_assert (tm_compare (&utc, &local) == 0);
   ck_assert (tm_equals (utc, local) == 0);
 
-  tm_tolocal (&utc);
-  tm_islocal (utc);
+  tm_tolocalrepresentation (&utc);
+  tm_islocalrepresentation (utc);
 
   ck_assert (tm_diffseconds (utc, local) == 0);
   ck_assert (tm_compare (&utc, &local) == 0);

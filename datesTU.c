@@ -133,7 +133,7 @@ main (int argc, char *argv[])
   tm_adddays (&aDate, 0);
   tm_print (aDate);
 
-  tm_tolocal (&aDate);
+  tm_tolocalrepresentation (&aDate);
   tm_print (aDate);
   tm_addmonths (&aDate, 0);
   tm_print (aDate);
@@ -146,7 +146,7 @@ main (int argc, char *argv[])
   tm_addmonths (&aDate, 0);
   tm_print (aDate);
 
-  tm_toutc (&aDate);
+  tm_toutcrepresentation (&aDate);
   tm_print (aDate);
   tm_addmonths (&aDate, 0);
   tm_print (aDate);
@@ -159,7 +159,7 @@ main (int argc, char *argv[])
   tm_addmonths (&aDate, 0);
   tm_print (aDate);
 
-  tm_tolocal (&aDate);
+  tm_tolocalrepresentation (&aDate);
 
   bDate = aDate;
   tm_addmonths (&bDate, 6);
@@ -209,22 +209,22 @@ main (int argc, char *argv[])
   tm_print (aDate);
 
   tm_makelocal (&aDate, 2003, 12, 28, 12, 0, 0);
-  tm_toutc (&aDate);
+  tm_toutcrepresentation (&aDate);
   tm_print (aDate);
-  tm_toutc (&aDate);
+  tm_toutcrepresentation (&aDate);
   tm_print (aDate);
-  tm_tolocal (&aDate);
+  tm_tolocalrepresentation (&aDate);
   tm_print (aDate);
-  tm_tolocal (&aDate);
+  tm_tolocalrepresentation (&aDate);
   tm_print (aDate);
   tm_makelocal (&aDate, 2003, 6, 28, 12, 0, 0);
-  tm_toutc (&aDate);
+  tm_toutcrepresentation (&aDate);
   tm_print (aDate);
-  tm_toutc (&aDate);
+  tm_toutcrepresentation (&aDate);
   tm_print (aDate);
-  tm_tolocal (&aDate);
+  tm_tolocalrepresentation (&aDate);
   tm_print (aDate);
-  tm_tolocal (&aDate);
+  tm_tolocalrepresentation (&aDate);
   tm_print (aDate);
 
   if (tm_setdatefromstring (&aDate, "2002-02-01") == TM_OK)
@@ -236,7 +236,7 @@ main (int argc, char *argv[])
   if (tm_settimefromstring (&aDate, "13:02:45") == TM_OK)
     tm_print (aDate);
 
-  tm_toutc (&aDate);
+  tm_toutcrepresentation (&aDate);
 
   if (tm_setdatefromstring (&aDate, "05/06/05") == TM_OK)
     tm_print (aDate);
@@ -251,11 +251,11 @@ main (int argc, char *argv[])
   tm_print (aDate);
   tm_makenow (&aDate);
   tm_print (aDate);
-  tm_tolocal (&aDate);
+  tm_tolocalrepresentation (&aDate);
   tm_print (aDate);
-  tm_toutc (&aDate);
+  tm_toutcrepresentation (&aDate);
   tm_print (aDate);
-  tm_tolocal (&aDate);
+  tm_tolocalrepresentation (&aDate);
 
   while (1)
     test_date ();

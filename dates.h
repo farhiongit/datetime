@@ -19,8 +19,8 @@
 /// Once initialized, tm_set(), tm_setdatefromstring(), tm_settimefromstring() can be used to modify the instant.
 ///
 /// Instants in time can be at will represented either in UTC or local time.
-/// Functions tm_toutc() and tm_tolocal() allow to switch from one representation to the other.
-/// Functions tm_isutc(), tm_islocal() and tm_getrepresentation() permit to know the current representation of an instant in time.
+/// Functions tm_toutcrepresentation() and tm_tolocalrepresentation() allow to switch from one representation to the other.
+/// Functions tm_isutcrepresentation(), tm_islocalrepresentation() and tm_getrepresentation() permit to know the current representation of an instant in time.
 /// These functions do not affect the instant in time but only the way it is yield. One could think of it as the unit with which the instant is expressed. 
 /// 
 /// Daylight saving time is taken into account in local time representation but is not applicable to UTC:
@@ -384,22 +384,22 @@ int tm_diffisoyears (struct tm debut, struct tm fin);
 /// @param [in,out] date Pointer to broken-down time structure
 /// @remark Has no effect if time representation is UTC already.
 /// @returns TM_OK on success, TM_ERROR otherwise.
-tm_status tm_toutc (struct tm *date);
+tm_status tm_toutcrepresentation (struct tm *date);
 
 /// Switches representation of instant in time to local time
 /// @param [in,out] date Pointer to broken-down time structure
 /// @remark Has no effect if time representation is local time already.
-tm_status tm_tolocal (struct tm *date);
+tm_status tm_tolocalrepresentation (struct tm *date);
 
 /// Indicates that the representation of instant in time is UTC.
 /// @param [in] date Broken-down time structure
 /// @returns 1 if \p date is in UTC representation, 0 otherwise.
-int tm_isutc (struct tm date);
+int tm_isutcrepresentation (struct tm date);
 
 /// Indicates that the representation of instant in time is local time.
 /// @param [in] date Broken-down time structure
 /// @returns 1 if \p date is in local time representation, 0 otherwise.
-int tm_islocal (struct tm date);
+int tm_islocalrepresentation (struct tm date);
 
 /// Gets the current representation of instant in time.
 /// @param [in] date Broken-down time structure
