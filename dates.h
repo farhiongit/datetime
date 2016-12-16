@@ -293,7 +293,7 @@ long int tm_diffseconds (struct tm debut, struct tm fin);
 /// Compares two dates.
 /// @param [in] debut Pointer to broken-down time structure
 /// @param [in] fin Pointer to broken-down time structure
-/// @return 1 if \p debut is before \p fin, -1 if \p debut is after \p fin, 0 if \p debut and \p fin are at same instant, independently of representation.
+/// @return -1 if \p debut is before \p fin, 1 if \p debut is after \p fin, 0 if \p debut and \p fin are at same instant, independently of representation.
 /// @remark The representation of instants of time are not considered.
 /// @remark Compatible for use with qsort().
 int tm_compare (const void *debut, const void *fin);

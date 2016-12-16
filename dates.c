@@ -632,7 +632,7 @@ tm_diffseconds (struct tm debut, struct tm fin)
 int
 tm_compare (const void *pdebut, const void *pfin)
 {
-  long int diff = tm_diffseconds (*(struct tm *) pdebut, *(struct tm *) pfin);
+  long int diff = -tm_diffseconds (*(struct tm *) pdebut, *(struct tm *) pfin);
 
   return diff < 0 ? -1 : (diff > 0 ? 1 : 0);
 }

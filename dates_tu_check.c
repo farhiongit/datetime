@@ -703,7 +703,34 @@ START_TEST (tu_serialization)
 }
 
 END_TEST
+START_TEST (tu_day_loop)
+{
+  struct tm hour;
+  struct tm end_of_day;
 
+  tm_makelocal (&end_of_day, 2016, TM_MARCH, 28, 0, 0, 0);
+  for (tm_makelocal (&hour, 2016, TM_MARCH, 27, 0, 0, 0) ; tm_compare (&hour, &end_of_day) < 0 ; tm_addseconds (&hour, 3600))
+  {
+    printf ("%02i-%02i%s;", tm_gethours (hour), tm_gethours (hour)+1,tm_isdaylightsavingextrasummertime (hour) ? "A" : tm_isdaylightsavingextrawintertime (hour) ? "B" : " ");
+  }
+  printf ("\n");
+
+  tm_makelocal (&end_of_day, 2016, TM_AUGUST, 28, 0, 0, 0);
+  for (tm_makelocal (&hour, 2016, TM_AUGUST, 27, 0, 0, 0) ; tm_compare (&hour, &end_of_day) < 0 ; tm_addseconds (&hour, 3600))
+  {
+    printf ("%02i-%02i%s;", tm_gethours (hour), tm_gethours (hour)+1,tm_isdaylightsavingextrasummertime (hour) ? "A" : tm_isdaylightsavingextrawintertime (hour) ? "B" : " ");
+  }
+  printf ("\n");
+
+  tm_makelocal (&end_of_day, 2016, TM_OCTOBER, 31, 0, 0, 0);
+  for (tm_makelocal (&hour, 2016, TM_OCTOBER, 30, 0, 0, 0) ; tm_compare (&hour, &end_of_day) < 0 ; tm_addseconds (&hour, 3600))
+  {
+    printf ("%02i-%02i%s;", tm_gethours (hour), tm_gethours (hour)+1,tm_isdaylightsavingextrasummertime (hour) ? "A" : tm_isdaylightsavingextrawintertime (hour) ? "B" : " ");
+  }
+  printf ("\n");
+}
+
+END_TEST
 /**************** SEQUENCEMENT DES TESTS ***************/
 static Suite *
 mm_suite (void)
@@ -742,6 +769,7 @@ mm_suite (void)
   tcase_add_test (tc, tu_equality);
   tcase_add_test (tc, tu_change_timezone);
   tcase_add_test (tc, tu_serialization);
+  tcase_add_test (tc, tu_day_loop);
 
   suite_add_tcase (s, tc);
 
