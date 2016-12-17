@@ -229,13 +229,16 @@ tm_status tm_addseconds (struct tm *date, long int nbSecs);
 /// It takes into account leap years and the number of days in a month.
 ///
 /// Behavior depends on the current representation of the instant of time : in local time representation, adding one day might correspond to adding 23, 24 or 25 hours, depending whether or not there is a daylight saving time change.
-/// In case representation for both indtants of time is local, days including between standard time and daylight saving time count for 23 or 25 hours rather than 24.
-/// I.e., adding 14 days to march the 14th, 2016, 9 am, local Paris time, yields march the 28th, 9 am (rather than 10 am if a multiple of 24 hours was added), that is only 335 hours.
-/// In order to add a multiple of 24 hours, use tm_addseconds().
+/// In case representation for both instants of time is local, days including a switch between standard time and daylight saving time count for 23 or 25 hours rather than 24.
+/// I.e., adding 14 days to march the 14th, 2016, 9 am, local Paris time, yields march the 28th, 9 am (rather than 10 am if a multiple of 24 hours were added), that is only 335 hours.
+///
+/// In order to add an exact multiple of 24 hours, use tm_addseconds() instead.
 ///
 /// In local time, if adding days results in an hour that is not valid in the resulting day (in case of daylight saving time change from winter to summer rule), an extra hour is added.
 /// For example, the transition from standard time to daylight saving time occurs in the U.S. Pacific Time zone on March 14, 2010, at 2:00 A.M., when the time advances by one hour, to 3:00 A.M.
 /// This hour interval is an invalid time, that is, a time interval that does not exist in this time zone.
+/// Thus, adding one day to March 13, 2010, 2:30 A.M. will result in March 14, 2010, 3:30 A.M, rather than 2:30 A.M.
+///
 /// @param [in,out] date Pointer to broken-down time structure
 /// @param [in] nbDays Number of days to add to \p date
 /// @returns \p TM_OK or \p TM_ERROR (in case of overflow)
@@ -252,6 +255,8 @@ tm_status tm_adddays (struct tm *date, int nbDays);
 /// In local time, if adding days results in an hour that is not valid in the resulting day (in case of daylight saving time change from winter to summer rule), an extra hour is added.
 /// For example, the transition from standard time to daylight saving time occurs in the U.S. Pacific Time zone on March 14, 2010, at 2:00 A.M., when the time advances by one hour, to 3:00 A.M.
 /// This hour interval is an invalid time, that is, a time interval that does not exist in this time zone.
+/// Thus, adding one month to February 14, 2010, 2:30 A.M. will result in March 14, 2010, 3:30 A.M, rather than 2:30 A.M.
+///
 /// @param [in,out] date Pointer to broken-down time structure
 /// @param [in] nbMonths Number of months to add to \p date
 /// @returns \p TM_OK or \p TM_ERROR (in case of overflow)
@@ -266,7 +271,7 @@ tm_status tm_addmonths (struct tm *date, int nbMonths);
 /// @remark Behavior depends on time representation. Time representation is kept unchanged.
 tm_status tm_addyears (struct tm *date, int nbYears);
 
-/// Sets the time value to 0am and keeps the date component unchanged.
+/// Sets the time value to 0am (beginning of the day) and keeps the date component unchanged.
 /// @param [in,out] date Pointer to broken-down time structure
 /// @remark Behavior depends on time representation. Time representation is kept unchanged.
 tm_status tm_trimtime (struct tm *date);
