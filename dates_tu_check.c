@@ -126,6 +126,27 @@ START_TEST (tu_today)
 }
 
 END_TEST
+START_TEST (tu_today_utc)
+{
+  struct tm aujourdhui;
+
+  tm_makenow (&aujourdhui);
+  tm_toutcrepresentation (&aujourdhui);
+  tm_trimtime (&aujourdhui);
+  tm_print (aujourdhui);
+  ck_assert (tm_isutcrepresentation (aujourdhui));
+  ck_assert (tm_getutcoffset (aujourdhui) == 0);
+  ck_assert (tm_getrepresentation (aujourdhui) == TM_UTC);
+  ck_assert (tm_gethours (aujourdhui) == 0);
+  ck_assert (tm_getminutes (aujourdhui) == 0);
+  ck_assert (tm_getseconds (aujourdhui) == 0);
+  tm_tolocalrepresentation (&aujourdhui);
+  tm_print (aujourdhui);
+  ck_assert (tm_islocalrepresentation (aujourdhui));
+  ck_assert (tm_getrepresentation (aujourdhui) == TM_LOCAL);
+}
+
+END_TEST
 START_TEST (tu_local)
 {
   struct tm dt;
@@ -172,13 +193,16 @@ START_TEST (tu_set_from_local)
   ck_assert (tm_islocalrepresentation (dt));
 
   ck_assert (tm_setdatefromstring (&dt, "23/4/1987") != TM_ERROR);
+  ck_assert (tm_setdatefromstring (&dt, "23/09/1987") != TM_ERROR);
   ck_assert (tm_islocalrepresentation (dt));
   ck_assert (tm_setdatefromstring (&dt, "33/4/1987") == TM_ERROR);
   ck_assert (tm_setdatefromstring (&dt, "23/4") == TM_ERROR);
   ck_assert (tm_islocalrepresentation (dt));
+  ck_assert (tm_setdatefromstring (&dt, "1999-03-17") != TM_ERROR);     // ISO format
+  ck_assert (tm_setdatefromstring (&dt, "1999-02-29") == TM_ERROR);
 
   ck_assert (tm_settimefromstring (&dt, "23:04") != TM_ERROR);
-  ck_assert (tm_settimefromstring (&dt, "25:04") == TM_ERROR);
+  ck_assert (tm_settimefromstring (&dt, "25:04") == TM_ERROR);  // 25
   ck_assert (tm_islocalrepresentation (dt));
   ck_assert (tm_settimefromstring (&dt, "33/4/1987") == TM_ERROR);      // date
   ck_assert (tm_settimefromstring (&dt, "23:04:03") != TM_ERROR);
@@ -198,11 +222,14 @@ START_TEST (tu_set_from_utc)
   ck_assert (tm_getutcoffset (dt) == 0);
 
   ck_assert (tm_setdatefromstring (&dt, "23/4/1987") != TM_ERROR);
+  ck_assert (tm_setdatefromstring (&dt, "23/09/1987") != TM_ERROR);
   ck_assert (tm_isutcrepresentation (dt));
   ck_assert (tm_setdatefromstring (&dt, "33/4/1987") == TM_ERROR);      // 33
   ck_assert (tm_setdatefromstring (&dt, "23/4") == TM_ERROR);
   ck_assert (tm_isutcrepresentation (dt));
   ck_assert (tm_getutcoffset (dt) == 0);
+  ck_assert (tm_setdatefromstring (&dt, "1999-03-17") != TM_ERROR);     // ISO format
+  ck_assert (tm_setdatefromstring (&dt, "1999-02-29") == TM_ERROR);
 
   ck_assert (tm_settimefromstring (&dt, "23:04") != TM_ERROR);
   ck_assert (tm_settimefromstring (&dt, "25:04") == TM_ERROR);  // 25
@@ -798,6 +825,7 @@ mm_suite (void)
 
   tcase_add_test (tc, tu_now);
   tcase_add_test (tc, tu_today);
+  tcase_add_test (tc, tu_today_utc);
   tcase_add_test (tc, tu_local);
   tcase_add_test (tc, tu_utc);
   tcase_add_test (tc, tu_set_from_local);

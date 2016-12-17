@@ -126,12 +126,8 @@ tm_maketoday (struct tm * tm)
 {
   if (tm_makenow (tm) == TM_ERROR)
     return TM_ERROR;
-
-  tm->tm_sec = tm->tm_min = tm->tm_hour = 0;
-  tm->tm_isdst = -1;            // Let timezone information and system databases define DST flag.
-
-  errno = 0;
-  return tm_normalizetolocal (tm) != (time_t) - 1 || !errno ? TM_OK : TM_ERROR;
+  else
+    return tm_trimtime (tm);
 }
 
 tm_status
@@ -214,7 +210,7 @@ tm_setdatefromstring (struct tm * tm, const char *buf)
   if (!ret || *ret)
     ret = strptime (buf, "%Ex", tm);
   if (!ret || *ret)
-    ret = strptime (buf, "%F", tm);
+    ret = strptime (buf, "%Y-%m-%d", tm);
   if (!ret || *ret)
     return TM_ERROR;
 

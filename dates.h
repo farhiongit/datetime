@@ -176,7 +176,7 @@ tm_status tm_settimefromstring (struct tm *dt, const char *str);
 /// @param [in] str string representation of date (without time)
 /// @param [out] dt Pointer to broken-down time structure
 /// @returns \p TM_OK or \p TM_ERROR (in case of overflow)
-/// @remark Behavior depends on time representation. Time representation is kept unchanged. Makes call to strptime().
+/// @remark Behavior depends on time representation. Time representation is kept unchanged. Makes use of strptime().
 tm_status tm_setdatefromstring (struct tm *dt, const char *str);
 
 ///@}
