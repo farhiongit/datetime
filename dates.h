@@ -159,7 +159,7 @@ tm_status tm_makeutc (struct tm *dt, int year, tm_month month, int day, int hour
 /// @param [in] sec Seconds
 /// @param [out] dt Pointer to broken-down time structure
 /// @returns \p TM_OK or \p TM_ERROR (in case of overflow)
-/// @remark Depends on time representation. Time representation is kept unchanged.
+/// @remark Behavior depends on time representation. Time representation is kept unchanged.
 tm_status tm_set (struct tm *dt, int year, tm_month month, int day, int hour, int min, int sec);
 
 /// Sets time from string.
@@ -167,7 +167,7 @@ tm_status tm_set (struct tm *dt, int year, tm_month month, int day, int hour, in
 /// @param [in] str string representation of time (without date)
 /// @param [out] dt Pointer to broken-down time structure
 /// @returns \p TM_OK or \p TM_ERROR (in case of overflow)
-/// @remark Depends on time representation. Time representation is kept unchanged.
+/// @remark Behavior depends on time representation. Time representation is kept unchanged.
 tm_status tm_settimefromstring (struct tm *dt, const char *str);
 
 /// Sets date from string.
@@ -176,7 +176,7 @@ tm_status tm_settimefromstring (struct tm *dt, const char *str);
 /// @param [in] str string representation of date (without time)
 /// @param [out] dt Pointer to broken-down time structure
 /// @returns \p TM_OK or \p TM_ERROR (in case of overflow)
-/// @remark Depends on time representation. Time representation is kept unchanged. Makes call to strptime().
+/// @remark Behavior depends on time representation. Time representation is kept unchanged. Makes call to strptime().
 tm_status tm_setdatefromstring (struct tm *dt, const char *str);
 
 ///@}
@@ -195,7 +195,7 @@ tm_status tm_setdatefromstring (struct tm *dt, const char *str);
 /// @param [out] str null terminated string
 /// @returns \p TM_OK if the result string, including the terminating null byte, does not exceed \p max bytes,
 ///          \p TM_ERROR otherwise (and the contents of the string \p str are then undefined.)
-/// @remark Depends on time representation. Makes call to strftime().
+/// @remark Behavior depends on time representation. Makes call to strftime().
 tm_status tm_getdateintostring (struct tm dt, char *str, size_t max);
 
 /// Formats time into string.
@@ -206,7 +206,7 @@ tm_status tm_getdateintostring (struct tm dt, char *str, size_t max);
 /// @param [out] str null terminated string. 
 /// @returns \p TM_OK if the result string, including the terminating null byte, does not exceed \p max bytes,
 ///          \p TM_ERROR otherwise (and the contents of the string \p str are then undefined.)
-/// @remark Depends on time representation. Makes call to strftime().
+/// @remark Behavior depends on time representation. Makes call to strftime().
 tm_status tm_gettimeintostring (struct tm dt, char *str, size_t max);
 
 ///@}
@@ -239,7 +239,7 @@ tm_status tm_addseconds (struct tm *date, long int nbSecs);
 /// @param [in,out] date Pointer to broken-down time structure
 /// @param [in] nbDays Number of days to add to \p date
 /// @returns \p TM_OK or \p TM_ERROR (in case of overflow)
-/// @remark Depends on time representation. Time representation is kept unchanged.
+/// @remark Behavior depends on time representation. Time representation is kept unchanged.
 tm_status tm_adddays (struct tm *date, int nbDays);
 
 /// Adds full months to the instant of time, changing year, month without altering day of month, hours, minutes and seconds (if possible).
@@ -255,16 +255,21 @@ tm_status tm_adddays (struct tm *date, int nbDays);
 /// @param [in,out] date Pointer to broken-down time structure
 /// @param [in] nbMonths Number of months to add to \p date
 /// @returns \p TM_OK or \p TM_ERROR (in case of overflow)
-/// @remark Depends on time representation. Time representation is kept unchanged.
+/// @remark Behavior depends on time representation. Time representation is kept unchanged.
 tm_status tm_addmonths (struct tm *date, int nbMonths);
 
 /// Adds full years to the instant of time, changing year without altering month, day of month, hours, minutes and seconds (if possible).
-/// Behaves like tm_addmonths() with argument \p nbMonths equal to 12 x \p nbYears.
+/// Behaves as if tm_addmonths() were called with argument \p nbMonths equal to 12 x \p nbYears.
 /// @param [in,out] date Pointer to broken-down time structure
 /// @param [in] nbYears Number of months to add to \p date
 /// @returns \p TM_OK or \p TM_ERROR (in case of overflow)
-/// @remark Depends on time representation. Time representation is kept unchanged.
+/// @remark Behavior depends on time representation. Time representation is kept unchanged.
 tm_status tm_addyears (struct tm *date, int nbYears);
+
+/// Sets the time value to 0am and keeps the date component unchanged.
+/// @param [in,out] date Pointer to broken-down time structure
+/// @remark Behavior depends on time representation. Time representation is kept unchanged.
+tm_status tm_trimtime (struct tm *date);
 
 ///@}
 
@@ -278,7 +283,7 @@ tm_status tm_addyears (struct tm *date, int nbYears);
 /// Returns a value indicating whether two broken-down time have the same value (including representation).
 /// @param [in] a Broken-down time structure
 /// @param [in] b Broken-down time structure
-/// @remark Depends on time representation. Use tm_diffseconds() or tm_compare() for an absolute date and time comparison.
+/// @remark Behavior depends on time representation. Use tm_diffseconds() or tm_compare() for an absolute date and time comparison.
 /// @returns 1 if the two broken-down time have the same value, 0 otherwise.
 int tm_equals (struct tm a, struct tm b);
 
@@ -303,7 +308,7 @@ int tm_compare (const void *debut, const void *fin);
 /// @param [in] fin Broken-down time structure
 /// @returns Number of partial or complete days between \p debut and \p fin.
 /// @remark Partial days are counted as 1.
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 /// @remark Both \p debut and \p fin should have identical representation, otherwise result is unspecified.
 int tm_diffdays (struct tm debut, struct tm fin);
 
@@ -314,7 +319,7 @@ int tm_diffdays (struct tm debut, struct tm fin);
 /// @param [in] fin Broken-down time structure
 /// @returns Number of complete days between \p debut and \p fin.
 /// @remark Partial days are counted as 0.
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 /// @remark Both \p debut and \p fin should have identical representation, otherwise result is unspecified.
 int tm_difffulldays (struct tm debut, struct tm fin);
 
@@ -322,7 +327,7 @@ int tm_difffulldays (struct tm debut, struct tm fin);
 /// @param [in] debut Broken-down time structure
 /// @param [in] fin Broken-down time structure
 /// @returns Number of complete weeks between \p debut and \p fin.
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 /// @remark Both \p debut and \p fin should have identical representation, otherwise result is unspecified.
 int tm_difffullweeks (struct tm debut, struct tm fin);
 
@@ -331,7 +336,7 @@ int tm_difffullweeks (struct tm debut, struct tm fin);
 /// @param [in] fin Broken-down time structure
 /// @returns Number of partial or complete months between \p debut and \p fin.
 /// @remark Partial months are counted as 1.
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 /// @remark Both \p debut and \p fin should have identical representation, otherwise result is unspecified.
 int tm_diffmonths (struct tm debut, struct tm fin);
 
@@ -340,7 +345,7 @@ int tm_diffmonths (struct tm debut, struct tm fin);
 /// @param [in] fin Broken-down time structure
 /// @returns Number of complete months between \p debut and \p fin.
 /// @remark Partial months are counted as 0.
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 /// @remark Both \p debut and \p fin should have identical representation, otherwise result is unspecified.
 int tm_difffullmonths (struct tm debut, struct tm fin);
 
@@ -349,7 +354,7 @@ int tm_difffullmonths (struct tm debut, struct tm fin);
 /// @param [in] fin Broken-down time structure
 /// @returns Number of partial or complete years between \p debut and \p fin.
 /// @remark Partial years are counted as 1.
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 /// @remark Both \p debut and \p fin should have identical representation, otherwise result is unspecified.
 int tm_diffyears (struct tm debut, struct tm fin);
 
@@ -358,7 +363,7 @@ int tm_diffyears (struct tm debut, struct tm fin);
 /// @param [in] fin Broken-down time structure
 /// @returns Number of complete years between \p debut and \p fin.
 /// @remark Partial years are counted as 0.
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 /// @remark Both \p debut and \p fin should have identical representation, otherwise result is unspecified.
 int tm_difffullyears (struct tm debut, struct tm fin);
 
@@ -367,7 +372,7 @@ int tm_difffullyears (struct tm debut, struct tm fin);
 /// @param [in] fin Broken-down time structure
 /// @returns Number of partial or complete ISO years between \p debut and \p fin.
 /// @remark Partial ISO years are counted as 1.
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 /// @remark Both \p debut and \p fin should have identical representation, otherwise result is unspecified.
 int tm_diffisoyears (struct tm debut, struct tm fin);
 
@@ -416,25 +421,25 @@ tm_representation tm_getrepresentation (struct tm date);
 
 /// Indicates if the system local timezone does have any daylight saving time rules.
 /// @returns 0 if this timezone does not have any daylight saving time rules, or nonzero if there is a time, past, present or future when daylight saving time applies.
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 int tm_hasdaylightsavingtimerules (void);
 
 /// Indicates that daylight saving time is in effect.
 /// @param [in] date Broken-down time structure
 /// @returns 1 if DST is set, 0 otherwise.
-/// @remark Depends on time representation. In UTC represntation, 0 is returned.
+/// @remark Behavior depends on time representation. In UTC represntation, 0 is returned.
 int tm_isdaylightsavingtime (struct tm date);
 
 /// Indicates that date and time will be repeated after DST looses effect.
 /// @param [in] date Broken-down time structure
 /// @returns 1 if time is duplicated (before DST change), 0 otherwise.
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 int tm_isdaylightsavingextrasummertime (struct tm date);
 
 /// Indicates that date and time has already occured before DST lost effect.
 /// @param [in] date Broken-down time structure
 /// @returns 1 if time is duplicated (after DST change), 0 otherwise.
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 int tm_isdaylightsavingextrawintertime (struct tm date);
 
 ///@}
@@ -448,79 +453,79 @@ int tm_isdaylightsavingextrawintertime (struct tm date);
 /// Gets the year, in the Gregorian calendar.
 /// @param [in] date Broken-down time structure
 /// @returns Year
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 int tm_getyear (struct tm date);
 
 /// Gets the month in year, in the Gregorian calendar.
 /// @param [in] date Broken-down time structure
 /// @returns Month (1 = January, ..., 12=December)
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 tm_month tm_getmonth (struct tm date);
 
 /// Gets the day of the month, in the Gregorian calendar.
 /// @param [in] date Broken-down time structure
 /// @returns Day of month
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 int tm_getday (struct tm date);
 
 /// Gets hours.
 /// @param [in] date Broken-down time structure
 /// @returns Hours (between 0 and 23)
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 int tm_gethours (struct tm date);
 
 /// Gets minutes.
 /// @param [in] date Broken-down time structure
 /// @returns Minutes (between 0 and 59)
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 int tm_getminutes (struct tm date);
 
 /// Gets seconds.
 /// @param [in] date Broken-down time structure
 /// @returns Seconds (between 0 and 59)
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 int tm_getseconds (struct tm date);
 
 /// Gets day of year.
 /// @param [in] date Broken-down time structure
 /// @returns Day of year (1 = January, the 1st)
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 int tm_getdayofyear (struct tm date);
 
 /// Gets day of week.
 /// @param [in] date Broken-down time structure
 /// @returns Day of week (1 = Monday, 7 = Sunday)
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 tm_dayofweek tm_getdayofweek (struct tm date);
 
 /// Gets ISO week.
 /// @param [in] date Broken-down time structure
 /// @returns ISO 8601 week
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 int tm_getisoweek (struct tm date);
 
 /// Gets ISO year.
 /// @param [in] date Broken-down time structure
 /// @returns ISO 8601 year
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 int tm_getisoyear (struct tm date);
 
 /// Gets offset between UTC and local time.
 /// @param [in] date Broken-down time structure
 /// @returns Offset, in seconds, between UTC and time representation (local or UTC)
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 int tm_getutcoffset (struct tm date);
 
 /// Gets the name of the time zone (either UTC or local time depending on current representation).
 /// @param [in] date Broken-down time structure
 /// @returns Timezone abbreviation
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 const char *tm_gettimezone (struct tm date);
 
 /// Gets seconds of day.
 /// @param [in] date Broken-down time structure
 /// @returns Elapsed seconds since beginning of day.
-/// @remark Depends on time representation.
+/// @remark Behavior depends on time representation.
 int tm_getsecondsofday (struct tm date);
 
 ///@}

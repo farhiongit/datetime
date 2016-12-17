@@ -710,35 +710,76 @@ START_TEST (tu_day_loop)
   const char *result;
   char string[8];
 
-  result = "00-01 ;01-02 ;03-04 ;04-05 ;05-06 ;06-07 ;07-08 ;08-09 ;09-10 ;10-11 ;11-12 ;12-13 ;13-14 ;14-15 ;15-16 ;16-17 ;17-18 ;18-19 ;19-20 ;20-21 ;21-22 ;22-23 ;23-24 ;";
+  result =
+    "00-01 ;01-02 ;03-04 ;04-05 ;05-06 ;06-07 ;07-08 ;08-09 ;09-10 ;10-11 ;11-12 ;12-13 ;13-14 ;14-15 ;15-16 ;16-17 ;17-18 ;18-19 ;19-20 ;20-21 ;21-22 ;22-23 ;23-24 ;";
   tm_makelocal (&end_of_day, 2016, TM_MARCH, 28, 0, 0, 0);
-  for (tm_makelocal (&hour, 2016, TM_MARCH, 27, 0, 0, 0) ; tm_compare (&hour, &end_of_day) < 0 ; tm_addseconds (&hour, 3600))
+  for (tm_makelocal (&hour, 2016, TM_MARCH, 27, 0, 0, 0); tm_compare (&hour, &end_of_day) < 0;
+       tm_addseconds (&hour, 3600))
   {
-    sprintf (string, "%02i-%02i%s;", tm_gethours (hour), tm_gethours (hour)+1,tm_isdaylightsavingextrasummertime (hour) ? "A" : tm_isdaylightsavingextrawintertime (hour) ? "B" : " ");
-    ck_assert (strncmp(string, result, 7) == 0);
+    sprintf (string, "%02i-%02i%s;", tm_gethours (hour), tm_gethours (hour) + 1,
+             tm_isdaylightsavingextrasummertime (hour) ? "A" : tm_isdaylightsavingextrawintertime (hour) ? "B" : " ");
+    ck_assert (strncmp (string, result, 7) == 0);
     result += 7;
   }
+  ck_assert (*result == 0);
 
-  result = "00-01 ;01-02 ;02-03 ;03-04 ;04-05 ;05-06 ;06-07 ;07-08 ;08-09 ;09-10 ;10-11 ;11-12 ;12-13 ;13-14 ;14-15 ;15-16 ;16-17 ;17-18 ;18-19 ;19-20 ;20-21 ;21-22 ;22-23 ;23-24 ;";
+  result =
+    "00-01 ;01-02 ;02-03 ;03-04 ;04-05 ;05-06 ;06-07 ;07-08 ;08-09 ;09-10 ;10-11 ;11-12 ;12-13 ;13-14 ;14-15 ;15-16 ;16-17 ;17-18 ;18-19 ;19-20 ;20-21 ;21-22 ;22-23 ;23-24 ;";
   tm_makelocal (&end_of_day, 2016, TM_AUGUST, 28, 0, 0, 0);
-  for (tm_makelocal (&hour, 2016, TM_AUGUST, 27, 0, 0, 0) ; tm_compare (&hour, &end_of_day) < 0 ; tm_addseconds (&hour, 3600))
+  for (tm_makelocal (&hour, 2016, TM_AUGUST, 27, 0, 0, 0); tm_compare (&hour, &end_of_day) < 0;
+       tm_addseconds (&hour, 3600))
   {
-    sprintf (string, "%02i-%02i%s;", tm_gethours (hour), tm_gethours (hour)+1,tm_isdaylightsavingextrasummertime (hour) ? "A" : tm_isdaylightsavingextrawintertime (hour) ? "B" : " ");
-    ck_assert (strncmp(string, result, 7) == 0);
+    sprintf (string, "%02i-%02i%s;", tm_gethours (hour), tm_gethours (hour) + 1,
+             tm_isdaylightsavingextrasummertime (hour) ? "A" : tm_isdaylightsavingextrawintertime (hour) ? "B" : " ");
+    ck_assert (strncmp (string, result, 7) == 0);
     result += 7;
   }
+  ck_assert (*result == 0);
 
-  result = "00-01 ;01-02 ;02-03A;02-03B;03-04 ;04-05 ;05-06 ;06-07 ;07-08 ;08-09 ;09-10 ;10-11 ;11-12 ;12-13 ;13-14 ;14-15 ;15-16 ;16-17 ;17-18 ;18-19 ;19-20 ;20-21 ;21-22 ;22-23 ;23-24 ;";
+  result =
+    "00-01 ;01-02 ;02-03A;02-03B;03-04 ;04-05 ;05-06 ;06-07 ;07-08 ;08-09 ;09-10 ;10-11 ;11-12 ;12-13 ;13-14 ;14-15 ;15-16 ;16-17 ;17-18 ;18-19 ;19-20 ;20-21 ;21-22 ;22-23 ;23-24 ;";
   tm_makelocal (&end_of_day, 2016, TM_OCTOBER, 31, 0, 0, 0);
-  for (tm_makelocal (&hour, 2016, TM_OCTOBER, 30, 0, 0, 0) ; tm_compare (&hour, &end_of_day) < 0 ; tm_addseconds (&hour, 3600))
+  for (tm_makelocal (&hour, 2016, TM_OCTOBER, 30, 0, 0, 0); tm_compare (&hour, &end_of_day) < 0;
+       tm_addseconds (&hour, 3600))
   {
-    sprintf (string, "%02i-%02i%s;", tm_gethours (hour), tm_gethours (hour)+1,tm_isdaylightsavingextrasummertime (hour) ? "A" : tm_isdaylightsavingextrawintertime (hour) ? "B" : " ");
-    ck_assert (strncmp(string, result, 7) == 0);
+    sprintf (string, "%02i-%02i%s;", tm_gethours (hour), tm_gethours (hour) + 1,
+             tm_isdaylightsavingextrasummertime (hour) ? "A" : tm_isdaylightsavingextrawintertime (hour) ? "B" : " ");
+    ck_assert (strncmp (string, result, 7) == 0);
     result += 7;
   }
+  ck_assert (*result == 0);
 }
 
 END_TEST
+START_TEST (tu_beginningoftheday)
+{
+  struct tm date;
+
+  tm_makelocal (&date, 2016, TM_DECEMBER, 25, 14, 58, 39);
+  ck_assert (tm_trimtime (&date) != TM_ERROR);
+  ck_assert (tm_getrepresentation (date) == TM_LOCAL);
+  ck_assert (tm_getyear (date) == 2016);
+  ck_assert (tm_getmonth (date) == TM_DECEMBER);
+  ck_assert (tm_getday (date) == 25);
+  ck_assert (tm_gethours (date) == 0);
+  ck_assert (tm_getminutes (date) == 0);
+  ck_assert (tm_getseconds (date) == 0);
+  ck_assert (tm_getsecondsofday (date) == 0);
+
+  tm_makeutc (&date, 2016, TM_DECEMBER, 25, 14, 58, 39);
+  ck_assert (tm_trimtime (&date) != TM_ERROR);
+  ck_assert (tm_getrepresentation (date) == TM_UTC);
+  ck_assert (tm_getyear (date) == 2016);
+  ck_assert (tm_getmonth (date) == TM_DECEMBER);
+  ck_assert (tm_getday (date) == 25);
+  ck_assert (tm_gethours (date) == 0);
+  ck_assert (tm_getminutes (date) == 0);
+  ck_assert (tm_getseconds (date) == 0);
+  ck_assert (tm_getsecondsofday (date) == 0);
+}
+
+END_TEST
+
 /**************** SEQUENCEMENT DES TESTS ***************/
 static Suite *
 mm_suite (void)
@@ -778,6 +819,7 @@ mm_suite (void)
   tcase_add_test (tc, tu_change_timezone);
   tcase_add_test (tc, tu_serialization);
   tcase_add_test (tc, tu_day_loop);
+  tcase_add_test (tc, tu_beginningoftheday);
 
   suite_add_tcase (s, tc);
 

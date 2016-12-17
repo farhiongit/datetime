@@ -612,6 +612,16 @@ tm_addyears (struct tm * date, int nbYears)
   return tm_addmonths (date, 12 * nbYears);
 }
 
+tm_status
+tm_trimtime (struct tm * tm)
+{
+  tm->tm_sec = tm->tm_min = tm->tm_hour = 0;
+  tm->tm_isdst = -1;            // Let timezone information and system databases define DST flag.
+
+  errno = 0;
+  return tm_normalize (tm) != (time_t) - 1 || !errno ? TM_OK : TM_ERROR;
+}
+
 /*****************************************************
 *   COMPARATORS                                      *
 *****************************************************/
