@@ -583,6 +583,25 @@ int tm_getdaysinmonth (int year, tm_month month);
 /// @returns Number of seconds in day \p day of month \p month of year \p year, in local time
 int tm_getnumberofsecondsinlocalday (int year, tm_month month, int day);
 
+/// Returns the day of the first weekday in the specified month.
+/// @param [in] year Year
+/// @param [in] month Month
+/// @param [in] dow Day of week
+/// @returns The day of the first weekday in the specified month.
+int tm_getfirstweekdayinmonth (int year, tm_month month, tm_dayofweek dow);
+
+/// Returns the day of the first weekday in the specified year.
+/// @param [in] year Year
+/// @param [in] dow Day of week
+/// @returns The day of the first weekday in the specified month.
+int tm_getfirstweekdayinyear (int year, tm_dayofweek dow);
+
+/// Returns the day of the first weekday in the specified ISO-year.
+/// @param [in] isoyear ISO-year
+/// @param [in] dow Day of week
+/// @returns The day of the first weekday in the specified month.
+int tm_getfirstweekdayinisoyear (int isoyear, tm_dayofweek dow);
+
 ///@}
 
 /*****************************************************

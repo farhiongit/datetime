@@ -378,7 +378,42 @@ tm_getnumberofsecondsinlocalday (int year, tm_month month, int day)
   tm_adddays (&date, 1);
   ret += tm_normalize (&date);
 
-  return ret;
+  return (int) ret;
+}
+
+int
+tm_getfirstweekdayinmonth (int year, tm_month month, tm_dayofweek dow)
+{
+  struct tm date;
+
+  if (tm_makelocal (&date, year, month, 1, 0, 0, 0) == TM_ERROR)
+    return -1;
+
+  return (dow - tm_getdayofweek (date) + 7) % 7 + 1;
+}
+
+int
+tm_getfirstweekdayinyear (int year, tm_dayofweek dow)
+{
+  struct tm date;
+
+  if (tm_makelocal (&date, year, TM_JANUARY, 1, 0, 0, 0) == TM_ERROR)
+    return -1;
+
+  return (dow - tm_getdayofweek (date) + 7) % 7 + 1;
+}
+
+int
+tm_getfirstweekdayinisoyear (int isoyear, tm_dayofweek dow)
+{
+  struct tm date;
+
+  int ret = tm_getfirstweekdayinyear (isoyear, dow) + 7;
+
+  if (tm_makelocal (&date, isoyear, TM_JANUARY, ret, 0, 0, 0) == TM_ERROR)
+    return -1;
+
+  return ret + 7 - 7 * tm_getisoweek (date);
 }
 
 /*****************************************************

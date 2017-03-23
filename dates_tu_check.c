@@ -45,7 +45,7 @@ tm_print (struct tm date)
 {
   char buf[1000];
 
-  strftime (buf, sizeof (buf), "*%x %X\n" "*%c\n" "*%G-W%V-%u\n" "*%Y-D%j", &date);
+  strftime (buf, sizeof (buf), "* %x %X\n" "* %c\n" "* %G-W%V-%u\n" "* %Y-D%j", &date);
 
   char strd[1000];
   char strt[1000];
@@ -778,7 +778,7 @@ START_TEST (tu_day_loop)
 }
 
 END_TEST
-START_TEST (tu_beginningoftheday)
+START_TEST (tu_beginingoftheday)
 {
   struct tm date;
 
@@ -803,6 +803,67 @@ START_TEST (tu_beginningoftheday)
   ck_assert (tm_getminutes (date) == 0);
   ck_assert (tm_getseconds (date) == 0);
   ck_assert (tm_getsecondsofday (date) == 0);
+}
+
+END_TEST
+START_TEST (tu_moon_walk)
+{
+  struct tm moon_walk;
+  int y, d, h, m, s, dst;
+  tm_month M;
+
+  const char *tz = getenv ("TZ");
+
+  setenv ("TZ", "America/New_York", 1);
+
+  // Moon walk in NYC: 1969-07-20 22:56:00 -04:00
+  ck_assert (tm_makelocal (&moon_walk, 1969, TM_JULY, 20, 22, 56, 0) == TM_OK);
+  ck_assert (tm_getutcoffset (moon_walk) == -4 * 3600);
+  tm_print (moon_walk);
+
+  tm_getintimezone (moon_walk, "Australia/Sydney", &y, &M, &d, &h, &m, &s, &dst);
+
+  // Moon walk in SYD: 1969-07-21 12:56:00 +10:00
+  ck_assert (y == 1969);
+  ck_assert (M == TM_JULY);
+  ck_assert (d == 21);
+  ck_assert (h == 12);
+  ck_assert (m == 56);
+  ck_assert (s == 0);
+
+  // Moon walk in UTC: 1969-07-21 02:56:00Z
+  ck_assert (tm_makeutc (&moon_walk, 1969, TM_JULY, 21, 2, 56, 0) == TM_OK);
+  ck_assert (tm_getutcoffset (moon_walk) == 0);
+  tm_print (moon_walk);
+
+  tm_getintimezone (moon_walk, "Europe/Chisinau", &y, &M, &d, &h, &m, &s, &dst);
+
+  // Moon walk in Moldavia: 1969-07-21 05:56:00 +03:00
+  ck_assert (y == 1969);
+  ck_assert (M == TM_JULY);
+  ck_assert (d == 21);
+  ck_assert (h == 5);
+  ck_assert (m == 56);
+  ck_assert (s == 0);
+
+  // Back to local timezone
+  if (tz)
+    setenv ("TZ", tz, 1);
+  else
+    unsetenv ("TZ");
+}
+
+END_TEST
+START_TEST (tu_weekday)
+{
+  ck_assert (tm_getfirstweekdayinmonth (2017, TM_MARCH, TM_TUESDAY) == 7);
+  ck_assert (tm_getfirstweekdayinmonth (2017, TM_MARCH, TM_SATURDAY) == 4);
+
+  ck_assert (tm_getfirstweekdayinyear (2017, TM_TUESDAY) == 3);
+  ck_assert (tm_getfirstweekdayinyear (2017, TM_SUNDAY) == 1);
+
+  ck_assert (tm_getfirstweekdayinisoyear (2017, TM_TUESDAY) == 3);
+  ck_assert (tm_getfirstweekdayinisoyear (2017, TM_SUNDAY) == 8);
 }
 
 END_TEST
@@ -847,7 +908,9 @@ mm_suite (void)
   tcase_add_test (tc, tu_change_timezone);
   tcase_add_test (tc, tu_serialization);
   tcase_add_test (tc, tu_day_loop);
-  tcase_add_test (tc, tu_beginningoftheday);
+  tcase_add_test (tc, tu_beginingoftheday);
+  tcase_add_test (tc, tu_moon_walk);
+  tcase_add_test (tc, tu_weekday);
 
   suite_add_tcase (s, tc);
 
