@@ -613,7 +613,7 @@ int tm_getfirstweekdayinisoyear (int isoyear, tm_dayofweek dow);
 /*****************************************************
 *   SERIALIEZRS                                      *
 *****************************************************/
-///@name Calendar properties
+///@name Serializers
 ///@{
 
 /// Serializes the instant of time to a binary value that subsequently can be used to recreate the instant of time.
