@@ -347,6 +347,17 @@ tm_isleapyear (int year)
 }
 
 int
+tm_getweeksinisoyear (int isoyear)
+{
+  struct tm date;
+
+  if (tm_makelocal (&date, isoyear + 1, TM_JANUARY, 4, 0, 0, 0) == TM_ERROR || tm_adddays (&date, -7) == TM_ERROR)
+    return -1;
+
+  return tm_getisoweek (date);
+}
+
+int
 tm_getdaysinmonth (int year, tm_month month)
 {
   int ret = 1;
@@ -365,7 +376,7 @@ tm_getdaysinmonth (int year, tm_month month)
 }
 
 int
-tm_getnumberofsecondsinlocalday (int year, tm_month month, int day)
+tm_getsecondsinlocalday (int year, tm_month month, int day)
 {
   long int ret = 0;
 
@@ -393,14 +404,18 @@ tm_getfirstweekdayinmonth (int year, tm_month month, tm_dayofweek dow)
 }
 
 int
-tm_getfirstweekdayinyear (int year, tm_dayofweek dow)
+tm_getlastweekdayinmonth (int year, tm_month month, tm_dayofweek dow)
 {
   struct tm date;
 
-  if (tm_makelocal (&date, year, TM_JANUARY, 1, 0, 0, 0) == TM_ERROR)
+  int last = tm_getdaysinmonth (year, month);
+
+  if (tm_makelocal (&date, year, month, last, 0, 0, 0) == TM_ERROR)
     return -1;
 
-  return (dow - tm_getdayofweek (date) + 7) % 7 + 1;
+  int diff = dow - tm_getdayofweek (date);
+
+  return last + diff + (diff > 0 ? -7 : 0);
 }
 
 int
@@ -408,7 +423,7 @@ tm_getfirstweekdayinisoyear (int isoyear, tm_dayofweek dow)
 {
   struct tm date;
 
-  int ret = tm_getfirstweekdayinyear (isoyear, dow) + 7;
+  int ret = tm_getfirstweekdayinmonth (isoyear, TM_JANUARY, dow) + 7;
 
   if (tm_makelocal (&date, isoyear, TM_JANUARY, ret, 0, 0, 0) == TM_ERROR)
     return -1;

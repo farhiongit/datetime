@@ -452,9 +452,9 @@ START_TEST (tu_ops_utc)
 END_TEST
 START_TEST (tu_dst)
 {
-  ck_assert (tm_getnumberofsecondsinlocalday (2016, 9, 27) == 24 * 3600);
-  ck_assert (tm_getnumberofsecondsinlocalday (2016, 10, 30) == 25 * 3600);
-  ck_assert (tm_getnumberofsecondsinlocalday (2016, 3, 27) == 23 * 3600);
+  ck_assert (tm_getsecondsinlocalday (2016, 9, 27) == 24 * 3600);
+  ck_assert (tm_getsecondsinlocalday (2016, 10, 30) == 25 * 3600);
+  ck_assert (tm_getsecondsinlocalday (2016, 3, 27) == 23 * 3600);
   ck_assert (tm_hasdaylightsavingtimerules ());
 }
 
@@ -552,6 +552,7 @@ START_TEST (tu_iso)
   tm_makelocal (&aDate, 2003, 12, 28, 10, 0, 0);
   ck_assert (tm_getisoyear (aDate) == 2003);
   ck_assert (tm_getisoweek (aDate) == 52);
+  ck_assert (tm_getweeksinisoyear (2003) == 52);
 
   tm_makelocal (&aDate, 2003, 12, 29, 10, 0, 0);
   ck_assert (tm_getisoyear (aDate) == 2004);
@@ -560,10 +561,12 @@ START_TEST (tu_iso)
   tm_makelocal (&aDate, 2005, 1, 2, 10, 0, 0);
   ck_assert (tm_getisoyear (aDate) == 2004);
   ck_assert (tm_getisoweek (aDate) == 53);
+  ck_assert (tm_getweeksinisoyear (2004) == 53);
 
   tm_makelocal (&aDate, 2005, 1, 3, 10, 0, 0);
   ck_assert (tm_getisoyear (aDate) == 2005);
   ck_assert (tm_getisoweek (aDate) == 1);
+  ck_assert (tm_getweeksinisoyear (2005) == 52);
 }
 
 END_TEST
@@ -859,8 +862,8 @@ START_TEST (tu_weekday)
   ck_assert (tm_getfirstweekdayinmonth (2017, TM_MARCH, TM_TUESDAY) == 7);
   ck_assert (tm_getfirstweekdayinmonth (2017, TM_MARCH, TM_SATURDAY) == 4);
 
-  ck_assert (tm_getfirstweekdayinyear (2017, TM_TUESDAY) == 3);
-  ck_assert (tm_getfirstweekdayinyear (2017, TM_SUNDAY) == 1);
+  ck_assert (tm_getlastweekdayinmonth (2017, TM_MARCH, TM_TUESDAY) == 28);
+  ck_assert (tm_getlastweekdayinmonth (2017, TM_MARCH, TM_SATURDAY) == 25);
 
   ck_assert (tm_getfirstweekdayinisoyear (2017, TM_TUESDAY) == 3);
   ck_assert (tm_getfirstweekdayinisoyear (2017, TM_SUNDAY) == 8);

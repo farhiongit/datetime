@@ -568,6 +568,11 @@ void tm_getintimezone (struct tm date, const char *tz, int *year, tm_month * mon
 /// @returns 1 if \p year is a leap year, 0 otherwise
 int tm_isleapyear (int year);
 
+/// Returns the number of weeks in ISO year.
+/// @param [in] isoyear year
+/// @returns The number of weeks in ISO year
+int tm_getweeksinisoyear (int isoyear);
+
 /// Returns the number of days in the specified month and year.
 /// It interprets month and year as the month and year of the Gregorian calendar, taking leap years into account.
 /// @param [in] year The year specified as a 4-digit number (for example, 1996), interpreted as a year in the Gregorian calendar.
@@ -581,7 +586,7 @@ int tm_getdaysinmonth (int year, tm_month month);
 /// @param [in] month Month
 /// @param [in] day Day of month
 /// @returns Number of seconds in day \p day of month \p month of year \p year, in local time
-int tm_getnumberofsecondsinlocalday (int year, tm_month month, int day);
+int tm_getsecondsinlocalday (int year, tm_month month, int day);
 
 /// Returns the day of the first weekday in the specified month.
 /// @param [in] year Year
@@ -590,14 +595,15 @@ int tm_getnumberofsecondsinlocalday (int year, tm_month month, int day);
 /// @returns The day of the first weekday in the specified month.
 int tm_getfirstweekdayinmonth (int year, tm_month month, tm_dayofweek dow);
 
-/// Returns the day of the first weekday in the specified year.
+/// Returns the day of the last weekday in the specified month.
 /// @param [in] year Year
+/// @param [in] month Month
 /// @param [in] dow Day of week
-/// @returns The day of the first weekday in the specified month.
-int tm_getfirstweekdayinyear (int year, tm_dayofweek dow);
+/// @returns The day of the last weekday in the specified month.
+int tm_getlastweekdayinmonth (int year, tm_month month, tm_dayofweek dow);
 
 /// Returns the day of the first weekday in the specified ISO-year.
-/// @param [in] isoyear ISO-year
+/// @param [in] isoyear year
 /// @param [in] dow Day of week
 /// @returns The day of the first weekday in the specified month.
 int tm_getfirstweekdayinisoyear (int isoyear, tm_dayofweek dow);
