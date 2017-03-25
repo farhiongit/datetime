@@ -52,8 +52,8 @@
 /// Values of status
 typedef enum
 {
-  TM_OK,                        ///< Sucess
-  TM_ERROR,                     ///< Error
+  TM_OK = EXIT_SUCCESS,         ///< Sucess
+  TM_ERROR = EXIT_FAILURE,      ///< Error
 } tm_status;
 
 ///@typedef tm_representation
@@ -68,31 +68,31 @@ typedef enum
 /// Days of week
 typedef enum
 {
-  TM_MONDAY = 1,                ///< Monday (1)
-  TM_TUESDAY,                   ///< Tuesday (2)
-  TM_WEDNESDAY,                 ///< Wednesday (3)
-  TM_THURSDAY,                  ///< Thursday (4)
-  TM_FRIDAY,                    ///< Friday (5)
-  TM_SATURDAY,                  ///< Saturday (6)
-  TM_SUNDAY,                    ///< Sunday (7)
+  TM_WEEKDAY_MONDAY = 1,        ///< Monday (1)
+  TM_WEEKDAY_TUESDAY,           ///< Tuesday (2)
+  TM_WEEKDAY_WEDNESDAY,         ///< Wednesday (3)
+  TM_WEEKDAY_THURSDAY,          ///< Thursday (4)
+  TM_WEEKDAY_FRIDAY,            ///< Friday (5)
+  TM_WEEKDAY_SATURDAY,          ///< Saturday (6)
+  TM_WEEKDAY_SUNDAY,            ///< Sunday (7)
 } tm_dayofweek;
 
 ///@typedef tm_month
 /// Months
 typedef enum
 {
-  TM_JANUARY = 1,               ///< January (1)
-  TM_FEBRUARY,                  ///< February (2)
-  TM_MARCH,                     ///< March (3)
-  TM_APRIL,                     ///< April (4)
-  TM_MAY,                       ///< May (5)
-  TM_JUNE,                      ///< June (6)
-  TM_JULY,                      ///< July (7)
-  TM_AUGUST,                    ///< August (8)
-  TM_SEPTEMBER,                 ///< September (9)
-  TM_OCTOBER,                   ///< October (10)
-  TM_NOVEMBER,                  ///< November (11)
-  TM_DECEMBER,                  ///< December (12)
+  TM_MONTH_JANUARY = 1,         ///< January (1)
+  TM_MONTH_FEBRUARY,            ///< February (2)
+  TM_MONTH_MARCH,               ///< March (3)
+  TM_MONTH_APRIL,               ///< April (4)
+  TM_MONTH_MAY,                 ///< May (5)
+  TM_MONTH_JUNE,                ///< June (6)
+  TM_MONTH_JULY,                ///< July (7)
+  TM_MONTH_AUGUST,              ///< August (8)
+  TM_MONTH_SEPTEMBER,           ///< September (9)
+  TM_MONTH_OCTOBER,             ///< October (10)
+  TM_MONTH_NOVEMBER,            ///< November (11)
+  TM_MONTH_DECEMBER,            ///< December (12)
 } tm_month;
 
 ///@}
@@ -624,10 +624,10 @@ int tm_getfirstweekdayinisoyear (int isoyear, tm_dayofweek dow);
 time_t tm_tobinary (struct tm date);
 
 /// Deserializes a binary value and recreates an original serialized date and time.
-/// @param [out] date Pointer to broken-down time structure, either in local timezone or UTC representation
+/// @param [out] date Pointer to broken-down time structure, in local timezone representation
 /// @param [in] binary representation of instant (point in time).
 /// @returns TM_OK on sucess, TM_ERROR otherwise (overflow).
-/// @remark The instant (point in time) is initialized in local time representation by default.
+/// @remark The instant (point in time) is presented in local time representation by default.
 tm_status tm_frombinary (struct tm *date, time_t binary);
 
 ///@}

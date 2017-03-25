@@ -351,7 +351,7 @@ tm_getweeksinisoyear (int isoyear)
 {
   struct tm date;
 
-  if (tm_makelocal (&date, isoyear + 1, TM_JANUARY, 4, 0, 0, 0) == TM_ERROR || tm_adddays (&date, -7) == TM_ERROR)
+  if (tm_makelocal (&date, isoyear + 1, TM_MONTH_JANUARY, 4, 0, 0, 0) == TM_ERROR || tm_adddays (&date, -7) == TM_ERROR)
     return -1;
 
   return tm_getisoweek (date);
@@ -423,9 +423,9 @@ tm_getfirstweekdayinisoyear (int isoyear, tm_dayofweek dow)
 {
   struct tm date;
 
-  int ret = tm_getfirstweekdayinmonth (isoyear, TM_JANUARY, dow) + 7;
+  int ret = tm_getfirstweekdayinmonth (isoyear, TM_MONTH_JANUARY, dow) + 7;
 
-  if (tm_makelocal (&date, isoyear, TM_JANUARY, ret, 0, 0, 0) == TM_ERROR)
+  if (tm_makelocal (&date, isoyear, TM_MONTH_JANUARY, ret, 0, 0, 0) == TM_ERROR)
     return -1;
 
   return ret + 7 - 7 * tm_getisoweek (date);

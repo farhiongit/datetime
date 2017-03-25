@@ -281,13 +281,13 @@ START_TEST (tu_getters_local)
 
   ck_assert (tm_makelocal (&dt, 2012, 12, 31, 23, 59, 58) != TM_ERROR);
   ck_assert (tm_getyear (dt) == 2012);
-  ck_assert (tm_getmonth (dt) == TM_DECEMBER);
+  ck_assert (tm_getmonth (dt) == TM_MONTH_DECEMBER);
   ck_assert (tm_getday (dt) == 31);
   ck_assert (tm_gethours (dt) == 23);
   ck_assert (tm_getminutes (dt) == 59);
   ck_assert (tm_getseconds (dt) == 58);
   ck_assert (tm_getdayofyear (dt) == 366);
-  ck_assert (tm_getdayofweek (dt) == TM_MONDAY);
+  ck_assert (tm_getdayofweek (dt) == TM_WEEKDAY_MONDAY);
 }
 
 END_TEST
@@ -297,13 +297,13 @@ START_TEST (tu_getters_utc)
 
   ck_assert (tm_makeutc (&dt, 2013, 11, 30, 22, 58, 57) != TM_ERROR);
   ck_assert (tm_getyear (dt) == 2013);
-  ck_assert (tm_getmonth (dt) == TM_NOVEMBER);
+  ck_assert (tm_getmonth (dt) == TM_MONTH_NOVEMBER);
   ck_assert (tm_getday (dt) == 30);
   ck_assert (tm_gethours (dt) == 22);
   ck_assert (tm_getminutes (dt) == 58);
   ck_assert (tm_getseconds (dt) == 57);
   ck_assert (tm_getdayofyear (dt) == 334);
-  ck_assert (tm_getdayofweek (dt) == TM_SATURDAY);
+  ck_assert (tm_getdayofweek (dt) == TM_WEEKDAY_SATURDAY);
 }
 
 END_TEST
@@ -323,34 +323,34 @@ START_TEST (tu_ops_local)
 
   ck_assert (tm_makelocal (&dt, 2016, 5, 27, 1, 12, 21) != TM_ERROR);
   ck_assert (tm_addmonths (&dt, 9) == TM_OK);
-  ck_assert (tm_getmonth (dt) == TM_FEBRUARY);
+  ck_assert (tm_getmonth (dt) == TM_MONTH_FEBRUARY);
   ck_assert (tm_getday (dt) == 27);
   ck_assert (tm_gethours (dt) == 1);
 
-  ck_assert (tm_makelocal (&dt, 2016, TM_MARCH, 27, 1, 12, 21) != TM_ERROR);
+  ck_assert (tm_makelocal (&dt, 2016, TM_MONTH_MARCH, 27, 1, 12, 21) != TM_ERROR);
   ck_assert (tm_addseconds (&dt, 6 * 24 * 3600) == TM_OK);
   ck_assert (tm_getday (dt) == 2);
   ck_assert (tm_gethours (dt) == 2);
 
-  ck_assert (tm_makelocal (&dt, 2016, TM_MARCH, 26, 2, 12, 21) != TM_ERROR);
+  ck_assert (tm_makelocal (&dt, 2016, TM_MONTH_MARCH, 26, 2, 12, 21) != TM_ERROR);
   ck_assert (tm_adddays (&dt, 1) == TM_OK);
   ck_assert (tm_getday (dt) == 27);
   ck_assert (tm_gethours (dt) == 3);
 
-  ck_assert (tm_makelocal (&dt, 2016, TM_MARCH, 27, 1, 12, 21) != TM_ERROR);
+  ck_assert (tm_makelocal (&dt, 2016, TM_MONTH_MARCH, 27, 1, 12, 21) != TM_ERROR);
   ck_assert (tm_adddays (&dt, 6) == TM_OK);
   ck_assert (tm_getday (dt) == 2);
   ck_assert (tm_gethours (dt) == 1);
 
-  ck_assert (tm_makelocal (&dt, 2016, TM_FEBRUARY, 27, 2, 12, 21) != TM_ERROR);
+  ck_assert (tm_makelocal (&dt, 2016, TM_MONTH_FEBRUARY, 27, 2, 12, 21) != TM_ERROR);
   ck_assert (tm_addmonths (&dt, 1) == TM_OK);
-  ck_assert (tm_getmonth (dt) == TM_MARCH);
+  ck_assert (tm_getmonth (dt) == TM_MONTH_MARCH);
   ck_assert (tm_getday (dt) == 27);
   ck_assert (tm_gethours (dt) == 3);
 
-  ck_assert (tm_makelocal (&dt, 2016, TM_MARCH, 27, 1, 12, 21) != TM_ERROR);
+  ck_assert (tm_makelocal (&dt, 2016, TM_MONTH_MARCH, 27, 1, 12, 21) != TM_ERROR);
   ck_assert (tm_addmonths (&dt, 9) == TM_OK);
-  ck_assert (tm_getmonth (dt) == TM_DECEMBER);
+  ck_assert (tm_getmonth (dt) == TM_MONTH_DECEMBER);
   ck_assert (tm_getday (dt) == 27);
   ck_assert (tm_gethours (dt) == 1);
 
@@ -364,19 +364,19 @@ START_TEST (tu_ops_local)
   ck_assert (tm_getday (dt) == 5);
   ck_assert (tm_gethours (dt) == 1);
 
-  ck_assert (tm_makelocal (&dt, 2016, TM_OCTOBER, 30, 1, 12, 21) != TM_ERROR);
+  ck_assert (tm_makelocal (&dt, 2016, TM_MONTH_OCTOBER, 30, 1, 12, 21) != TM_ERROR);
   ck_assert (tm_addmonths (&dt, 6) == TM_OK);
-  ck_assert (tm_getmonth (dt) == TM_APRIL);
+  ck_assert (tm_getmonth (dt) == TM_MONTH_APRIL);
   ck_assert (tm_getday (dt) == 30);
   ck_assert (tm_gethours (dt) == 1);
 
-  ck_assert (tm_makelocal (&dt, 2016, TM_OCTOBER, 31, 1, 12, 21) != TM_ERROR);
+  ck_assert (tm_makelocal (&dt, 2016, TM_MONTH_OCTOBER, 31, 1, 12, 21) != TM_ERROR);
   ck_assert (tm_addmonths (&dt, 1) == TM_OK);
   ck_assert (tm_getday (dt) == 30);
   ck_assert (tm_addmonths (&dt, 3) == TM_OK);
   ck_assert (tm_getday (dt) == 28);
   ck_assert (tm_addmonths (&dt, -4) == TM_OK);
-  ck_assert (tm_getmonth (dt) == TM_OCTOBER);
+  ck_assert (tm_getmonth (dt) == TM_MONTH_OCTOBER);
   ck_assert (tm_getday (dt) == 28);
 
   ck_assert (tm_makelocal (&dt, 2016, 3, 26, 2, 12, 21) != TM_ERROR);
@@ -389,7 +389,7 @@ START_TEST (tu_ops_local)
   ck_assert (tm_getday (dt) == 26);
   ck_assert (tm_gethours (dt) == 3);
 
-  ck_assert (tm_makelocal (&dt, 2016, TM_MARCH, 14, 9, 0, 0) != TM_ERROR);
+  ck_assert (tm_makelocal (&dt, 2016, TM_MONTH_MARCH, 14, 9, 0, 0) != TM_ERROR);
   ck_assert (tm_adddays (&dt, 14) == TM_OK);
   ck_assert (tm_getday (dt) == 28);
   ck_assert (tm_gethours (dt) == 9);
@@ -412,7 +412,7 @@ START_TEST (tu_ops_utc)
 
   ck_assert (tm_makeutc (&dt, 2016, 5, 27, 1, 12, 21) != TM_ERROR);
   ck_assert (tm_addmonths (&dt, 9) == TM_OK);
-  ck_assert (tm_getmonth (dt) == TM_FEBRUARY);
+  ck_assert (tm_getmonth (dt) == TM_MONTH_FEBRUARY);
   ck_assert (tm_getday (dt) == 27);
   ck_assert (tm_gethours (dt) == 1);
 
@@ -428,7 +428,7 @@ START_TEST (tu_ops_utc)
 
   ck_assert (tm_makeutc (&dt, 2016, 3, 27, 1, 12, 21) != TM_ERROR);
   ck_assert (tm_addmonths (&dt, 9) == TM_OK);
-  ck_assert (tm_getmonth (dt) == TM_DECEMBER);
+  ck_assert (tm_getmonth (dt) == TM_MONTH_DECEMBER);
   ck_assert (tm_getday (dt) == 27);
   ck_assert (tm_gethours (dt) == 1);
 
@@ -444,7 +444,7 @@ START_TEST (tu_ops_utc)
 
   ck_assert (tm_makeutc (&dt, 2016, 10, 30, 1, 12, 21) != TM_ERROR);
   ck_assert (tm_addmonths (&dt, 6) == TM_OK);
-  ck_assert (tm_getmonth (dt) == TM_APRIL);
+  ck_assert (tm_getmonth (dt) == TM_MONTH_APRIL);
   ck_assert (tm_getday (dt) == 30);
   ck_assert (tm_gethours (dt) == 1);
 }
@@ -610,8 +610,8 @@ START_TEST (tu_diff_local)
   ck_assert (tm_difffullyears (debut, fin) == 0);
   ck_assert (tm_diffisoyears (debut, fin) == 1);
 
-  ck_assert (tm_makelocal (&debut, 2016, TM_MARCH, 14, 9, 0, 0) == TM_OK);
-  ck_assert (tm_makelocal (&fin, 2016, TM_MARCH, 28, 9, 0, 0) == TM_OK);
+  ck_assert (tm_makelocal (&debut, 2016, TM_MONTH_MARCH, 14, 9, 0, 0) == TM_OK);
+  ck_assert (tm_makelocal (&fin, 2016, TM_MONTH_MARCH, 28, 9, 0, 0) == TM_OK);
 
   ck_assert (tm_difffulldays (debut, fin) == 14);
   ck_assert (tm_diffseconds (debut, fin) == 335 * 3600);        // 335 hours instaed of 336
@@ -636,8 +636,8 @@ START_TEST (tu_diff_utc)
   ck_assert (tm_difffullyears (debut, fin) == 0);
   ck_assert (tm_diffisoyears (debut, fin) == 1);
 
-  ck_assert (tm_makeutc (&debut, 2016, TM_MARCH, 14, 9, 0, 0) == TM_OK);
-  ck_assert (tm_makeutc (&fin, 2016, TM_MARCH, 28, 9, 0, 0) == TM_OK);
+  ck_assert (tm_makeutc (&debut, 2016, TM_MONTH_MARCH, 14, 9, 0, 0) == TM_OK);
+  ck_assert (tm_makeutc (&fin, 2016, TM_MONTH_MARCH, 28, 9, 0, 0) == TM_OK);
 
   ck_assert (tm_difffulldays (debut, fin) == 14);
   ck_assert (tm_diffseconds (debut, fin) == 336 * 3600);
@@ -668,7 +668,7 @@ START_TEST (tu_change_timezone)
   setenv ("TZ", "Europe/Kiev", 1);
   struct tm ki;
 
-  tm_makelocal (&ki, 2010, TM_MARCH, 21, 18, 0, 0);     // UTC+2h
+  tm_makelocal (&ki, 2010, TM_MONTH_MARCH, 21, 18, 0, 0);     // UTC+2h
   ck_assert (tm_isdaylightsavingtime (ki) == 0);        // DST starts on march, the 28th, at 3am
 
   int y, d, h, m, s, dst;
@@ -710,7 +710,7 @@ START_TEST (tu_serialization)
 {
   struct tm utc;
 
-  tm_makeutc (&utc, 2016, TM_JANUARY, 1, 18, 0, 0);
+  tm_makeutc (&utc, 2016, TM_MONTH_JANUARY, 1, 18, 0, 0);
   tm_isutcrepresentation (utc);
 
   long int instant = tm_tobinary (utc);
@@ -742,8 +742,8 @@ START_TEST (tu_day_loop)
 
   result =
     "00-01 ;01-02 ;03-04 ;04-05 ;05-06 ;06-07 ;07-08 ;08-09 ;09-10 ;10-11 ;11-12 ;12-13 ;13-14 ;14-15 ;15-16 ;16-17 ;17-18 ;18-19 ;19-20 ;20-21 ;21-22 ;22-23 ;23-24 ;";
-  tm_makelocal (&end_of_day, 2016, TM_MARCH, 28, 0, 0, 0);
-  for (tm_makelocal (&hour, 2016, TM_MARCH, 27, 0, 0, 0); tm_compare (&hour, &end_of_day) < 0;
+  tm_makelocal (&end_of_day, 2016, TM_MONTH_MARCH, 28, 0, 0, 0);
+  for (tm_makelocal (&hour, 2016, TM_MONTH_MARCH, 27, 0, 0, 0); tm_compare (&hour, &end_of_day) < 0;
        tm_addseconds (&hour, 3600))
   {
     sprintf (string, "%02i-%02i%s;", tm_gethours (hour), tm_gethours (hour) + 1,
@@ -755,8 +755,8 @@ START_TEST (tu_day_loop)
 
   result =
     "00-01 ;01-02 ;02-03 ;03-04 ;04-05 ;05-06 ;06-07 ;07-08 ;08-09 ;09-10 ;10-11 ;11-12 ;12-13 ;13-14 ;14-15 ;15-16 ;16-17 ;17-18 ;18-19 ;19-20 ;20-21 ;21-22 ;22-23 ;23-24 ;";
-  tm_makelocal (&end_of_day, 2016, TM_AUGUST, 28, 0, 0, 0);
-  for (tm_makelocal (&hour, 2016, TM_AUGUST, 27, 0, 0, 0); tm_compare (&hour, &end_of_day) < 0;
+  tm_makelocal (&end_of_day, 2016, TM_MONTH_AUGUST, 28, 0, 0, 0);
+  for (tm_makelocal (&hour, 2016, TM_MONTH_AUGUST, 27, 0, 0, 0); tm_compare (&hour, &end_of_day) < 0;
        tm_addseconds (&hour, 3600))
   {
     sprintf (string, "%02i-%02i%s;", tm_gethours (hour), tm_gethours (hour) + 1,
@@ -768,8 +768,8 @@ START_TEST (tu_day_loop)
 
   result =
     "00-01 ;01-02 ;02-03A;02-03B;03-04 ;04-05 ;05-06 ;06-07 ;07-08 ;08-09 ;09-10 ;10-11 ;11-12 ;12-13 ;13-14 ;14-15 ;15-16 ;16-17 ;17-18 ;18-19 ;19-20 ;20-21 ;21-22 ;22-23 ;23-24 ;";
-  tm_makelocal (&end_of_day, 2016, TM_OCTOBER, 31, 0, 0, 0);
-  for (tm_makelocal (&hour, 2016, TM_OCTOBER, 30, 0, 0, 0); tm_compare (&hour, &end_of_day) < 0;
+  tm_makelocal (&end_of_day, 2016, TM_MONTH_OCTOBER, 31, 0, 0, 0);
+  for (tm_makelocal (&hour, 2016, TM_MONTH_OCTOBER, 30, 0, 0, 0); tm_compare (&hour, &end_of_day) < 0;
        tm_addseconds (&hour, 3600))
   {
     sprintf (string, "%02i-%02i%s;", tm_gethours (hour), tm_gethours (hour) + 1,
@@ -785,22 +785,22 @@ START_TEST (tu_beginingoftheday)
 {
   struct tm date;
 
-  tm_makelocal (&date, 2016, TM_DECEMBER, 25, 14, 58, 39);
+  tm_makelocal (&date, 2016, TM_MONTH_DECEMBER, 25, 14, 58, 39);
   ck_assert (tm_trimtime (&date) != TM_ERROR);
   ck_assert (tm_getrepresentation (date) == TM_LOCAL);
   ck_assert (tm_getyear (date) == 2016);
-  ck_assert (tm_getmonth (date) == TM_DECEMBER);
+  ck_assert (tm_getmonth (date) == TM_MONTH_DECEMBER);
   ck_assert (tm_getday (date) == 25);
   ck_assert (tm_gethours (date) == 0);
   ck_assert (tm_getminutes (date) == 0);
   ck_assert (tm_getseconds (date) == 0);
   ck_assert (tm_getsecondsofday (date) == 0);
 
-  tm_makeutc (&date, 2016, TM_DECEMBER, 25, 14, 58, 39);
+  tm_makeutc (&date, 2016, TM_MONTH_DECEMBER, 25, 14, 58, 39);
   ck_assert (tm_trimtime (&date) != TM_ERROR);
   ck_assert (tm_getrepresentation (date) == TM_UTC);
   ck_assert (tm_getyear (date) == 2016);
-  ck_assert (tm_getmonth (date) == TM_DECEMBER);
+  ck_assert (tm_getmonth (date) == TM_MONTH_DECEMBER);
   ck_assert (tm_getday (date) == 25);
   ck_assert (tm_gethours (date) == 0);
   ck_assert (tm_getminutes (date) == 0);
@@ -820,7 +820,7 @@ START_TEST (tu_moon_walk)
   setenv ("TZ", "America/New_York", 1);
 
   // Moon walk in NYC: 1969-07-20 22:56:00 -04:00
-  ck_assert (tm_makelocal (&moon_walk, 1969, TM_JULY, 20, 22, 56, 0) == TM_OK);
+  ck_assert (tm_makelocal (&moon_walk, 1969, TM_MONTH_JULY, 20, 22, 56, 0) == TM_OK);
   ck_assert (tm_getutcoffset (moon_walk) == -4 * 3600);
   tm_print (moon_walk);
 
@@ -828,14 +828,14 @@ START_TEST (tu_moon_walk)
 
   // Moon walk in SYD: 1969-07-21 12:56:00 +10:00
   ck_assert (y == 1969);
-  ck_assert (M == TM_JULY);
+  ck_assert (M == TM_MONTH_JULY);
   ck_assert (d == 21);
   ck_assert (h == 12);
   ck_assert (m == 56);
   ck_assert (s == 0);
 
   // Moon walk in UTC: 1969-07-21 02:56:00Z
-  ck_assert (tm_makeutc (&moon_walk, 1969, TM_JULY, 21, 2, 56, 0) == TM_OK);
+  ck_assert (tm_makeutc (&moon_walk, 1969, TM_MONTH_JULY, 21, 2, 56, 0) == TM_OK);
   ck_assert (tm_getutcoffset (moon_walk) == 0);
   tm_print (moon_walk);
 
@@ -843,7 +843,7 @@ START_TEST (tu_moon_walk)
 
   // Moon walk in Moldavia: 1969-07-21 05:56:00 +03:00
   ck_assert (y == 1969);
-  ck_assert (M == TM_JULY);
+  ck_assert (M == TM_MONTH_JULY);
   ck_assert (d == 21);
   ck_assert (h == 5);
   ck_assert (m == 56);
@@ -859,14 +859,14 @@ START_TEST (tu_moon_walk)
 END_TEST
 START_TEST (tu_weekday)
 {
-  ck_assert (tm_getfirstweekdayinmonth (2017, TM_MARCH, TM_TUESDAY) == 7);
-  ck_assert (tm_getfirstweekdayinmonth (2017, TM_MARCH, TM_SATURDAY) == 4);
+  ck_assert (tm_getfirstweekdayinmonth (2017, TM_MONTH_MARCH, TM_WEEKDAY_TUESDAY) == 7);
+  ck_assert (tm_getfirstweekdayinmonth (2017, TM_MONTH_MARCH, TM_WEEKDAY_SATURDAY) == 4);
 
-  ck_assert (tm_getlastweekdayinmonth (2017, TM_MARCH, TM_TUESDAY) == 28);
-  ck_assert (tm_getlastweekdayinmonth (2017, TM_MARCH, TM_SATURDAY) == 25);
+  ck_assert (tm_getlastweekdayinmonth (2017, TM_MONTH_MARCH, TM_WEEKDAY_TUESDAY) == 28);
+  ck_assert (tm_getlastweekdayinmonth (2017, TM_MONTH_MARCH, TM_WEEKDAY_SATURDAY) == 25);
 
-  ck_assert (tm_getfirstweekdayinisoyear (2017, TM_TUESDAY) == 3);
-  ck_assert (tm_getfirstweekdayinisoyear (2017, TM_SUNDAY) == 8);
+  ck_assert (tm_getfirstweekdayinisoyear (2017, TM_WEEKDAY_TUESDAY) == 3);
+  ck_assert (tm_getfirstweekdayinisoyear (2017, TM_WEEKDAY_SUNDAY) == 8);
 }
 
 END_TEST
