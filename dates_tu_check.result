@@ -1,0 +1,213 @@
+Running suite(s): Dates toolkit
+----
+Structure tm (0x7fff18154430):
+ tm_year: 117
+ tm_mon: 2
+ tm_mday: 25
+ tm_hour: 14
+ tm_min: 27
+ tm_sec: 26
+ tm_wday: 6
+ tm_yday: 83
+ tm_isdst: 0
+ tm_isdst_extrasummertime: 0
+ tm_isdst_extrawintertime: 0
+ tm_gmtoff: +3600
+ tm_zone: CET (0x77cef0)
+2017-W12-6
+2017-D084+52046s
+* 25/03/2017 14:27:26
+* sam. 25 mars 2017 14:27:26 CET
+* 2017-W12-6
+* 2017-D084
+25/03/2017 14:27:26
+----
+----
+Structure tm (0x7fff18154430):
+ tm_year: 117
+ tm_mon: 2
+ tm_mday: 25
+ tm_hour: 13
+ tm_min: 27
+ tm_sec: 26
+ tm_wday: 6
+ tm_yday: 83
+ tm_isdst: 0
+ tm_isdst_extrasummertime: 0
+ tm_isdst_extrawintertime: 0
+ tm_gmtoff: +0
+ tm_zone: GMT (0x7f2aa239858a)
+2017-W12-6
+2017-D084+48446s
+* 25/03/2017 13:27:26
+* sam. 25 mars 2017 13:27:26 GMT
+* 2017-W12-6
+* 2017-D084
+25/03/2017 13:27:26
+----
+----
+Structure tm (0x7fff18154400):
+ tm_year: 117
+ tm_mon: 2
+ tm_mday: 25
+ tm_hour: 0
+ tm_min: 0
+ tm_sec: 0
+ tm_wday: 6
+ tm_yday: 83
+ tm_isdst: 0
+ tm_isdst_extrasummertime: 0
+ tm_isdst_extrawintertime: 0
+ tm_gmtoff: +3600
+ tm_zone: CET (0x77cf30)
+2017-W12-6
+2017-D084+0s
+* 25/03/2017 00:00:00
+* sam. 25 mars 2017 00:00:00 CET
+* 2017-W12-6
+* 2017-D084
+25/03/2017 00:00:00
+----
+----
+Structure tm (0x7fff18154400):
+ tm_year: 117
+ tm_mon: 2
+ tm_mday: 24
+ tm_hour: 23
+ tm_min: 0
+ tm_sec: 0
+ tm_wday: 5
+ tm_yday: 82
+ tm_isdst: 0
+ tm_isdst_extrasummertime: 0
+ tm_isdst_extrawintertime: 0
+ tm_gmtoff: +0
+ tm_zone: GMT (0x7f2aa239858a)
+2017-W12-5
+2017-D083+82800s
+* 24/03/2017 23:00:00
+* ven. 24 mars 2017 23:00:00 GMT
+* 2017-W12-5
+* 2017-D083
+24/03/2017 23:00:00
+----
+----
+Structure tm (0x7fff18154400):
+ tm_year: 117
+ tm_mon: 2
+ tm_mday: 25
+ tm_hour: 0
+ tm_min: 0
+ tm_sec: 0
+ tm_wday: 6
+ tm_yday: 83
+ tm_isdst: 0
+ tm_isdst_extrasummertime: 0
+ tm_isdst_extrawintertime: 0
+ tm_gmtoff: +0
+ tm_zone: GMT (0x77d090)
+2017-W12-6
+2017-D084+0s
+* 25/03/2017 00:00:00
+* sam. 25 mars 2017 00:00:00 GMT
+* 2017-W12-6
+* 2017-D084
+25/03/2017 00:00:00
+----
+----
+Structure tm (0x7fff18154400):
+ tm_year: 117
+ tm_mon: 2
+ tm_mday: 25
+ tm_hour: 1
+ tm_min: 0
+ tm_sec: 0
+ tm_wday: 6
+ tm_yday: 83
+ tm_isdst: 0
+ tm_isdst_extrasummertime: 0
+ tm_isdst_extrawintertime: 0
+ tm_gmtoff: +3600
+ tm_zone: CET (0x77cf90)
+2017-W12-6
+2017-D084+3600s
+* 25/03/2017 01:00:00
+* sam. 25 mars 2017 01:00:00 CET
+* 2017-W12-6
+* 2017-D084
+25/03/2017 01:00:00
+----
+----
+Structure tm (0x7fff181542f0):
+ tm_year: 69
+ tm_mon: 6
+ tm_mday: 20
+ tm_hour: 22
+ tm_min: 56
+ tm_sec: 0
+ tm_wday: 0
+ tm_yday: 200
+ tm_isdst: 1
+ tm_isdst_extrasummertime: 0
+ tm_isdst_extrawintertime: 0
+ tm_gmtoff: -14400
+ tm_zone: EDT (0x77f0b0)
+1969-W29-7
+1969-D201+82560s
+* 20/07/1969 22:56:00
+* dim. 20 juil. 1969 22:56:00 EDT
+* 1969-W29-7
+* 1969-D201
+20/07/1969 22:56:00
+----
+----
+Structure tm (0x7fff181542f0):
+ tm_year: 69
+ tm_mon: 6
+ tm_mday: 21
+ tm_hour: 2
+ tm_min: 56
+ tm_sec: 0
+ tm_wday: 1
+ tm_yday: 201
+ tm_isdst: 0
+ tm_isdst_extrasummertime: 0
+ tm_isdst_extrawintertime: 0
+ tm_gmtoff: +0
+ tm_zone: GMT (0x77d010)
+1969-W30-1
+1969-D202+10560s
+* 21/07/1969 02:56:00
+* lun. 21 juil. 1969 02:56:00 GMT
+* 1969-W30-1
+* 1969-D202
+21/07/1969 02:56:00
+----
+100%: Checks: 27, Failures: 0, Errors: 0
+dates_tu_check.c:106:P:Tests:tu_now:0: Passed
+dates_tu_check.c:125:P:Tests:tu_today:0: Passed
+dates_tu_check.c:146:P:Tests:tu_today_utc:0: Passed
+dates_tu_check.c:162:P:Tests:tu_local:0: Passed
+dates_tu_check.c:180:P:Tests:tu_utc:0: Passed
+dates_tu_check.c:209:P:Tests:tu_set_from_local:0: Passed
+dates_tu_check.c:240:P:Tests:tu_set_from_utc:0: Passed
+dates_tu_check.c:257:P:Tests:tu_tostring_local:0: Passed
+dates_tu_check.c:274:P:Tests:tu_tostring_utc:0: Passed
+dates_tu_check.c:290:P:Tests:tu_getters_local:0: Passed
+dates_tu_check.c:306:P:Tests:tu_getters_utc:0: Passed
+dates_tu_check.c:395:P:Tests:tu_ops_local:0: Passed
+dates_tu_check.c:449:P:Tests:tu_ops_utc:0: Passed
+dates_tu_check.c:617:P:Tests:tu_diff_local:0: Passed
+dates_tu_check.c:643:P:Tests:tu_diff_utc:0: Passed
+dates_tu_check.c:458:P:Tests:tu_dst:0: Passed
+dates_tu_check.c:544:P:Tests:tu_dst_winter:0: Passed
+dates_tu_check.c:481:P:Tests:tu_dst_summer:0: Passed
+dates_tu_check.c:569:P:Tests:tu_iso:0: Passed
+dates_tu_check.c:591:P:Tests:tu_calendar:0: Passed
+dates_tu_check.c:657:P:Tests:tu_equality:0: Passed
+dates_tu_check.c:699:P:Tests:tu_change_timezone:0: Passed
+dates_tu_check.c:732:P:Tests:tu_serialization:0: Passed
+dates_tu_check.c:780:P:Tests:tu_day_loop:0: Passed
+dates_tu_check.c:808:P:Tests:tu_beginingoftheday:0: Passed
+dates_tu_check.c:850:P:Tests:tu_moon_walk:0: Passed
+dates_tu_check.c:869:P:Tests:tu_weekday:0: Passed
