@@ -534,7 +534,7 @@ tm_islocalrepresentation (struct tm date)
 tm_representation
 tm_getrepresentation (struct tm date)
 {
-  return tm_islocalrepresentation (date) ? TM_LOCAL : TM_UTC;
+  return tm_islocalrepresentation (date) ? TM_REP_LOCAL : TM_REP_UTC;
 }
 
 int

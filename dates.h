@@ -60,8 +60,8 @@ typedef enum
 /// Kinds of representation for instant in time.
 typedef enum
 {
-  TM_LOCAL,                     ///< Local time
-  TM_UTC,                       ///< UTC
+  TM_REP_LOCAL,                     ///< Local time
+  TM_REP_UTC,                       ///< UTC
 } tm_representation;
 
 ///@typedef tm_dayofweek

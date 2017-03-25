@@ -98,12 +98,12 @@ START_TEST (tu_now)
   tm_makenow (&maintenant);
   tm_print (maintenant);
   ck_assert (tm_islocalrepresentation (maintenant));
-  ck_assert (tm_getrepresentation (maintenant) == TM_LOCAL);
+  ck_assert (tm_getrepresentation (maintenant) == TM_REP_LOCAL);
   tm_toutcrepresentation (&maintenant);
   tm_print (maintenant);
   ck_assert (tm_isutcrepresentation (maintenant));
   ck_assert (tm_getutcoffset (maintenant) == 0);
-  ck_assert (tm_getrepresentation (maintenant) == TM_UTC);
+  ck_assert (tm_getrepresentation (maintenant) == TM_REP_UTC);
 }
 
 END_TEST
@@ -114,7 +114,7 @@ START_TEST (tu_today)
   tm_maketoday (&aujourdhui);
   tm_print (aujourdhui);
   ck_assert (tm_islocalrepresentation (aujourdhui));
-  ck_assert (tm_getrepresentation (aujourdhui) == TM_LOCAL);
+  ck_assert (tm_getrepresentation (aujourdhui) == TM_REP_LOCAL);
   ck_assert (tm_gethours (aujourdhui) == 0);
   ck_assert (tm_getminutes (aujourdhui) == 0);
   ck_assert (tm_getseconds (aujourdhui) == 0);
@@ -122,7 +122,7 @@ START_TEST (tu_today)
   tm_print (aujourdhui);
   ck_assert (tm_isutcrepresentation (aujourdhui));
   ck_assert (tm_getutcoffset (aujourdhui) == 0);
-  ck_assert (tm_getrepresentation (aujourdhui) == TM_UTC);
+  ck_assert (tm_getrepresentation (aujourdhui) == TM_REP_UTC);
 }
 
 END_TEST
@@ -136,14 +136,14 @@ START_TEST (tu_today_utc)
   tm_print (aujourdhui);
   ck_assert (tm_isutcrepresentation (aujourdhui));
   ck_assert (tm_getutcoffset (aujourdhui) == 0);
-  ck_assert (tm_getrepresentation (aujourdhui) == TM_UTC);
+  ck_assert (tm_getrepresentation (aujourdhui) == TM_REP_UTC);
   ck_assert (tm_gethours (aujourdhui) == 0);
   ck_assert (tm_getminutes (aujourdhui) == 0);
   ck_assert (tm_getseconds (aujourdhui) == 0);
   tm_tolocalrepresentation (&aujourdhui);
   tm_print (aujourdhui);
   ck_assert (tm_islocalrepresentation (aujourdhui));
-  ck_assert (tm_getrepresentation (aujourdhui) == TM_LOCAL);
+  ck_assert (tm_getrepresentation (aujourdhui) == TM_REP_LOCAL);
 }
 
 END_TEST
@@ -159,7 +159,7 @@ START_TEST (tu_local)
   ck_assert (tm_makelocal (&dt, 2016, 3, 27, 2, 12, 21) == TM_ERROR);   // Does not exist (DST change)
   ck_assert (tm_makelocal (&dt, 2016, 10, 30, 2, 22, 21) != TM_ERROR);
   ck_assert (tm_islocalrepresentation (dt));
-  ck_assert (tm_getrepresentation (dt) == TM_LOCAL);
+  ck_assert (tm_getrepresentation (dt) == TM_REP_LOCAL);
 }
 
 END_TEST
@@ -177,7 +177,7 @@ START_TEST (tu_utc)
   ck_assert (tm_makeutc (&dt, 2016, 10, 30, 2, 22, 21) != TM_ERROR);
   ck_assert (tm_isutcrepresentation (dt));
   ck_assert (tm_getutcoffset (dt) == 0);
-  ck_assert (tm_getrepresentation (dt) == TM_UTC);
+  ck_assert (tm_getrepresentation (dt) == TM_REP_UTC);
 }
 
 END_TEST
@@ -787,7 +787,7 @@ START_TEST (tu_beginingoftheday)
 
   tm_makelocal (&date, 2016, TM_MONTH_DECEMBER, 25, 14, 58, 39);
   ck_assert (tm_trimtime (&date) != TM_ERROR);
-  ck_assert (tm_getrepresentation (date) == TM_LOCAL);
+  ck_assert (tm_getrepresentation (date) == TM_REP_LOCAL);
   ck_assert (tm_getyear (date) == 2016);
   ck_assert (tm_getmonth (date) == TM_MONTH_DECEMBER);
   ck_assert (tm_getday (date) == 25);
@@ -798,7 +798,7 @@ START_TEST (tu_beginingoftheday)
 
   tm_makeutc (&date, 2016, TM_MONTH_DECEMBER, 25, 14, 58, 39);
   ck_assert (tm_trimtime (&date) != TM_ERROR);
-  ck_assert (tm_getrepresentation (date) == TM_UTC);
+  ck_assert (tm_getrepresentation (date) == TM_REP_UTC);
   ck_assert (tm_getyear (date) == 2016);
   ck_assert (tm_getmonth (date) == TM_MONTH_DECEMBER);
   ck_assert (tm_getday (date) == 25);
