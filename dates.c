@@ -338,12 +338,8 @@ tm_normalize (struct tm *date)
 int
 tm_isleapyear (int year)
 {
-  struct tm tmp;
-
-  if (tm_makelocal (&tmp, year, 12, 31, 0, 0, 0) == TM_OK)
-    return (tmp.tm_yday == 364 ? 0 : 1);
-  else
-    return -1;
+  // Nonzero if year is a leap year (every 4 years, except every 100th isn't, and every 400th is).
+  return year % 400 == 0 || (year % 4 == 0 && year % 100 != 0);
 }
 
 int
@@ -460,19 +456,19 @@ tm_getday (struct tm date)
 }
 
 int
-tm_gethours (struct tm date)
+tm_gethour (struct tm date)
 {
   return date.tm_hour;
 }
 
 int
-tm_getminutes (struct tm date)
+tm_getminute (struct tm date)
 {
   return date.tm_min;
 }
 
 int
-tm_getseconds (struct tm date)
+tm_getsecond (struct tm date)
 {
   return date.tm_sec;
 }
@@ -694,8 +690,14 @@ tm_compare (const void *pdebut, const void *pfin)
 }
 
 int
-tm_diffdays (struct tm debut, struct tm fin)
+tm_diffcalendardays (struct tm debut, struct tm fin)
 {
+  if (tm_getrepresentation (debut) != tm_getrepresentation (fin))
+  {
+    errno = EINVAL;
+    return 0;
+  }
+
   int coeff = 1;
   int ret = 0;
 
@@ -721,8 +723,14 @@ tm_diffdays (struct tm debut, struct tm fin)
 }
 
 int
-tm_difffulldays (struct tm debut, struct tm fin)
+tm_diffdays (struct tm debut, struct tm fin, int *seconds)
 {
+  if (tm_getrepresentation (debut) != tm_getrepresentation (fin))
+  {
+    errno = EINVAL;
+    return 0;
+  }
+
   int coeff = 1;
 
   if (tm_diffseconds (debut, fin) < 0)
@@ -734,31 +742,57 @@ tm_difffulldays (struct tm debut, struct tm fin)
     coeff = -1;
   }
 
-  int ret = tm_diffdays (debut, fin);
+  int ret = tm_diffcalendardays (debut, fin);
 
   if (fin.tm_hour < debut.tm_hour || (fin.tm_hour == debut.tm_hour && fin.tm_min < debut.tm_min) ||
       (fin.tm_hour == debut.tm_hour && fin.tm_min == debut.tm_min && fin.tm_sec < debut.tm_sec))
     if (ret > 0)
       ret--;
 
+  if (seconds)
+  {
+    tm_adddays (&debut, ret);
+    *seconds = coeff * tm_diffseconds (debut, fin);
+  }
+
   return coeff * ret;
 }
 
 int
-tm_difffullweeks (struct tm debut, struct tm fin)
+tm_diffweeks (struct tm debut, struct tm fin, int *days, int *seconds)
 {
-  return tm_difffulldays (debut, fin) / 7;
+  int d = tm_diffdays (debut, fin, seconds);
+  int s = seconds ? *seconds : 0;
+
+  if (days)
+    *days = d >= 0 ? d % 7 : -((-d) % 7);
+  else if (seconds)
+    *seconds = s;
+
+  return d / 7;
 }
 
 int
-tm_diffmonths (struct tm debut, struct tm fin)
+tm_diffcalendarmonths (struct tm debut, struct tm fin)
 {
+  if (tm_getrepresentation (debut) != tm_getrepresentation (fin))
+  {
+    errno = EINVAL;
+    return 0;
+  }
+
   return 12 * (fin.tm_year - debut.tm_year) + fin.tm_mon - debut.tm_mon;
 }
 
 int
-tm_difffullmonths (struct tm debut, struct tm fin)
+tm_diffmonths (struct tm debut, struct tm fin, int *days, int *seconds)
 {
+  if (tm_getrepresentation (debut) != tm_getrepresentation (fin))
+  {
+    errno = EINVAL;
+    return 0;
+  }
+
   int coeff = 1;
 
   if (tm_diffseconds (debut, fin) < 0)
@@ -770,7 +804,7 @@ tm_difffullmonths (struct tm debut, struct tm fin)
     coeff = -1;
   }
 
-  int ret = tm_diffmonths (debut, fin);
+  int ret = tm_diffcalendarmonths (debut, fin);
 
   if (fin.tm_mday < debut.tm_mday ||
       (fin.tm_mday == debut.tm_mday && fin.tm_hour < debut.tm_hour) ||
@@ -780,30 +814,63 @@ tm_difffullmonths (struct tm debut, struct tm fin)
     if (ret > 0)
       ret--;
 
+  if (days)
+  {
+    tm_addmonths (&debut, ret);
+    *days = coeff * tm_diffdays (debut, fin, seconds);
+    if (seconds)
+      *seconds *= coeff;
+  }
+
   return coeff * ret;
 }
 
 int
-tm_diffyears (struct tm debut, struct tm fin)
+tm_diffcalendaryears (struct tm debut, struct tm fin)
 {
+  if (tm_getrepresentation (debut) != tm_getrepresentation (fin))
+  {
+    errno = EINVAL;
+    return 0;
+  }
+
   return tm_getyear (fin) - tm_getyear (debut);
 }
 
 int
-tm_difffullyears (struct tm debut, struct tm fin)
+tm_diffyears (struct tm debut, struct tm fin, int *months, int *days, int *seconds)
 {
-  return tm_difffullmonths (debut, fin) / 12;
+  int m = tm_diffmonths (debut, fin, days, seconds);
+  int d = days ? *days : 0;
+  int s = seconds ? *seconds : 0;
+
+  if (months)
+    *months = m >= 0 ? m % 12 : -((-m) % 12);
+  else
+  {
+    if (days)
+      *days = d;
+    if (seconds)
+      *seconds = s;
+  }
+  return m / 12;
 }
 
 int
 tm_diffisoyears (struct tm debut, struct tm fin)
 {
+  if (tm_getrepresentation (debut) != tm_getrepresentation (fin))
+  {
+    errno = EINVAL;
+    return 0;
+  }
+
   return tm_getisoyear (fin) - tm_getisoyear (debut);
 }
 
 void
-tm_getintimezone (struct tm date, const char *tz, int *year, tm_month * month, int *day, int *hours, int *minutes,
-                  int *seconds, int *isdst)
+tm_getintimezone (struct tm date, const char *tz, int *year, tm_month * month, int *day, int *hour, int *minute,
+                  int *second, int *isdst)
 {
   const char *oldtz = getenv ("TZ");
 
@@ -823,12 +890,12 @@ tm_getintimezone (struct tm date, const char *tz, int *year, tm_month * month, i
     *month = tm_getmonth (date);
   if (day)
     *day = tm_getday (date);
-  if (hours)
-    *hours = tm_gethours (date);
-  if (minutes)
-    *minutes = tm_getminutes (date);
-  if (seconds)
-    *seconds = tm_getseconds (date);
+  if (hour)
+    *hour = tm_gethour (date);
+  if (minute)
+    *minute = tm_getminute (date);
+  if (second)
+    *second = tm_getsecond (date);
   if (isdst)
     *isdst = tm_isdaylightsavingtime (date);
 

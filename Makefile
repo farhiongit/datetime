@@ -1,7 +1,7 @@
 COMPILER			= clang
 #COMPILER			= gcc
 CC				= $(COMPILER) -std=c11
-WARNINGS	= -Wall -pedantic
+WARNINGS	= -Wall -pedantic -Werror
 #COMPILE		= -pipe -O3 -fPIC
 DEBUG		 = -g -pg -DDEBUG -fgnu89-inline
 CFLAGS  = $(TEMP) $(DEBUG) $(WARNINGS) $(COMPILE) $(PROC_OPT)
@@ -22,6 +22,7 @@ doc: dates.doc/dates.pdf
 dates: libtm.a datesTU.o
 	$(CC) $(CFLAGS) -o "$@" datesTU.o $(LDFLAGS) -L. -ltm
 
+dates.o: dates.c dates.h
 libtm.a: dates.o
 	ar rcs "$@" $^
 

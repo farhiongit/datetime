@@ -60,8 +60,8 @@ typedef enum
 /// Kinds of representation for instant in time.
 typedef enum
 {
-  TM_REP_LOCAL,                     ///< Local time
-  TM_REP_UTC,                       ///< UTC
+  TM_REP_LOCAL,                 ///< Local time
+  TM_REP_UTC,                   ///< UTC
 } tm_representation;
 
 ///@typedef tm_dayofweek
@@ -315,26 +315,29 @@ int tm_compare (const void *debut, const void *fin);
 /// @remark Partial days are counted as 1.
 /// @remark Behavior depends on time representation.
 /// @remark Both \p debut and \p fin should have identical representation, otherwise result is unspecified.
-int tm_diffdays (struct tm debut, struct tm fin);
+int tm_diffcalendardays (struct tm debut, struct tm fin);
 
 /// Gets number of complete days between two dates.
 /// In case representation for both indtants of time is local, days including between standard time and daylight saving time count for 23 or 25 hours rather than 24.
 /// I.e., difference between march the 14th, 9 am and march the 28th, 9 am, 2016, local Paris time, is 14 days, even though it includes only 335 hours.
 /// @param [in] debut Broken-down time structure
 /// @param [in] fin Broken-down time structure
+/// @param [out] seconds Remainder in seconds (optional)
 /// @returns Number of complete days between \p debut and \p fin.
 /// @remark Partial days are counted as 0.
 /// @remark Behavior depends on time representation.
 /// @remark Both \p debut and \p fin should have identical representation, otherwise result is unspecified.
-int tm_difffulldays (struct tm debut, struct tm fin);
+int tm_diffdays (struct tm debut, struct tm fin, int *seconds);
 
 /// Gets number of complete weeks between two dates.
 /// @param [in] debut Broken-down time structure
 /// @param [in] fin Broken-down time structure
+/// @param [out] days Remainder in days (optional)
+/// @param [out] seconds Remainder in seconds (optional)
 /// @returns Number of complete weeks between \p debut and \p fin.
 /// @remark Behavior depends on time representation.
 /// @remark Both \p debut and \p fin should have identical representation, otherwise result is unspecified.
-int tm_difffullweeks (struct tm debut, struct tm fin);
+int tm_diffweeks (struct tm debut, struct tm fin, int *days, int *seconds);
 
 /// Gets number of partial months between two dates.
 /// @param [in] debut Broken-down time structure
@@ -343,16 +346,18 @@ int tm_difffullweeks (struct tm debut, struct tm fin);
 /// @remark Partial months are counted as 1.
 /// @remark Behavior depends on time representation.
 /// @remark Both \p debut and \p fin should have identical representation, otherwise result is unspecified.
-int tm_diffmonths (struct tm debut, struct tm fin);
+int tm_diffcalendarmonths (struct tm debut, struct tm fin);
 
 /// Gets number of complete months between two dates.
 /// @param [in] debut Broken-down time structure
 /// @param [in] fin Broken-down time structure
+/// @param [out] days Remainder in days (optional)
+/// @param [out] seconds Remainder in seconds (optional)
 /// @returns Number of complete months between \p debut and \p fin.
 /// @remark Partial months are counted as 0.
 /// @remark Behavior depends on time representation.
 /// @remark Both \p debut and \p fin should have identical representation, otherwise result is unspecified.
-int tm_difffullmonths (struct tm debut, struct tm fin);
+int tm_diffmonths (struct tm debut, struct tm fin, int *days, int *seconds);
 
 /// Gets number of partial years between two dates.
 /// @param [in] debut Broken-down time structure
@@ -361,16 +366,19 @@ int tm_difffullmonths (struct tm debut, struct tm fin);
 /// @remark Partial years are counted as 1.
 /// @remark Behavior depends on time representation.
 /// @remark Both \p debut and \p fin should have identical representation, otherwise result is unspecified.
-int tm_diffyears (struct tm debut, struct tm fin);
+int tm_diffcalendaryears (struct tm debut, struct tm fin);
 
 /// Gets number of complete years between two dates.
 /// @param [in] debut Broken-down time structure
 /// @param [in] fin Broken-down time structure
+/// @param [out] months Remainder in months (optional)
+/// @param [out] days Remainder in days (optional)
+/// @param [out] seconds Remainder in seconds (optional)
 /// @returns Number of complete years between \p debut and \p fin.
 /// @remark Partial years are counted as 0.
 /// @remark Behavior depends on time representation.
 /// @remark Both \p debut and \p fin should have identical representation, otherwise result is unspecified.
-int tm_difffullyears (struct tm debut, struct tm fin);
+int tm_diffyears (struct tm debut, struct tm fin, int *months, int *days, int *seconds);
 
 /// Gets number of partial ISO years between two dates.
 /// @param [in] debut Broken-down time structure
@@ -477,19 +485,19 @@ int tm_getday (struct tm date);
 /// @param [in] date Broken-down time structure
 /// @returns Hours (between 0 and 23)
 /// @remark Behavior depends on time representation.
-int tm_gethours (struct tm date);
+int tm_gethour (struct tm date);
 
 /// Gets minutes.
 /// @param [in] date Broken-down time structure
 /// @returns Minutes (between 0 and 59)
 /// @remark Behavior depends on time representation.
-int tm_getminutes (struct tm date);
+int tm_getminute (struct tm date);
 
 /// Gets seconds.
 /// @param [in] date Broken-down time structure
 /// @returns Seconds (between 0 and 59)
 /// @remark Behavior depends on time representation.
-int tm_getseconds (struct tm date);
+int tm_getsecond (struct tm date);
 
 /// Gets day of year.
 /// @param [in] date Broken-down time structure
@@ -548,12 +556,12 @@ int tm_getsecondsofday (struct tm date);
 /// @param [out] year Year at the time described in target timezone
 /// @param [out] month Month at the time described in target timezone
 /// @param [out] day Day at the time described in target timezone
-/// @param [out] hours Hours at the time described in target timezone
-/// @param [out] minutes Minutes at the time described in target timezone
-/// @param [out] seconds Seconds at the time described in target timezone
+/// @param [out] hour Hour at the time described in target timezone
+/// @param [out] minute Minute at the time described in target timezone
+/// @param [out] second Second at the time described in target timezone
 /// @param [out] is_dst_on Indicates whether (1) or not (0) daylight saving time is in effect at the time described in target timezone
-void tm_getintimezone (struct tm date, const char *tz, int *year, tm_month * month, int *day, int *hours, int *minutes,
-                       int *seconds, int *is_dst_on);
+void tm_getintimezone (struct tm date, const char *tz, int *year, tm_month * month, int *day, int *hour, int *minute,
+                       int *second, int *is_dst_on);
 
 ///@}
 
