@@ -572,6 +572,32 @@ tm_isdaylightsavingextrawintertime (struct tm date)
   return (date.tm_isdst ? 1 : 0);
 }
 
+tm_status
+tm_todaylightsavingextrawintertime (struct tm *date)
+{
+  if (!tm_isdaylightsavingextrasummertime (*date))
+    return TM_ERROR;
+
+  date->tm_isdst = 0;
+  tm_normalize (date);
+
+  // Returns tm_OK during the hour before DST loses effect (from summer to winter time switch), TM_ERROR otherwise.
+  return (date->tm_isdst ? TM_ERROR : TM_OK);
+}
+
+tm_status
+tm_todaylightsavingextrasummertime (struct tm *date)
+{
+  if (!tm_isdaylightsavingextrawintertime (*date))
+    return TM_ERROR;
+
+  date->tm_isdst = 1;
+  tm_normalize (date);
+
+  // Returns tm_OK during the hour after DST loses effect (from summer to winter time switch), TM_ERROR otherwise.
+  return (date->tm_isdst ? TM_OK : TM_ERROR);
+}
+
 int
 tm_getutcoffset (struct tm date)
 {

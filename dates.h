@@ -276,6 +276,24 @@ tm_status tm_addyears (struct tm *date, int nbYears);
 /// @remark Behavior depends on time representation. Time representation is kept unchanged.
 tm_status tm_trimtime (struct tm *date);
 
+/// Changes the zone offset to the earlier of the two valid offsets at a local time-line overlap.
+/// This function only has any effect when the local time-line overlaps, such as at an autumn daylight savings cutover.
+/// In this scenario, there are two valid offsets for the local date-time.
+/// Calling this method will return a local zoned date-time with the earlier of the two selected. 
+/// @param [in,out] date Broken-down time structure
+/// @returns TM_OK if instant was shifted, TM_ERROR otherwise.
+/// @remark Behavior depends on time representation.
+tm_status tm_todaylightsavingextrasummertime (struct tm *date);
+
+/// Changes the zone offset to the later of the two valid offsets at a local time-line overlap.
+/// This function only has any effect when the local time-line overlaps, such as at an autumn daylight savings cutover.
+/// In this scenario, there are two valid offsets for the local date-time.
+/// Calling this method will return a local zoned date-time with the later of the two selected. 
+/// @param [in,out] date Broken-down time structure
+/// @returns TM_OK if instant was shifted, TM_ERROR otherwise.
+/// @remark Behavior depends on time representation.
+tm_status tm_todaylightsavingextrawintertime (struct tm *date);
+
 ///@}
 
 /*****************************************************

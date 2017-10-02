@@ -470,6 +470,11 @@ START_TEST (tu_dst_summer)
   ck_assert (tm_gethour (aDate) == 1);
   int utcoffset = tm_getutcoffset (aDate);
 
+  ck_assert (tm_todaylightsavingextrawintertime (&aDate) == TM_ERROR);
+  ck_assert (tm_gethour (aDate) == 1);
+  ck_assert (tm_todaylightsavingextrasummertime (&aDate) == TM_ERROR);
+  ck_assert (tm_gethour (aDate) == 1);
+
   ck_assert (tm_getsecondsofday (aDate) == 3600 + 1800);
 
   tm_addseconds (&aDate, 3600);
@@ -479,6 +484,11 @@ START_TEST (tu_dst_summer)
   ck_assert (tm_gethour (aDate) == 3);
   ck_assert (tm_getutcoffset (aDate) == utcoffset + 3600);
   ck_assert (tm_getsecondsofday (aDate) == 2 * 3600 + 1800);
+
+  ck_assert (tm_todaylightsavingextrawintertime (&aDate) == TM_ERROR);
+  ck_assert (tm_gethour (aDate) == 3);
+  ck_assert (tm_todaylightsavingextrasummertime (&aDate) == TM_ERROR);
+  ck_assert (tm_gethour (aDate) == 3);
 }
 
 END_TEST
@@ -503,7 +513,9 @@ START_TEST (tu_dst_winter)
   ck_assert (tm_getutcoffset (aDate) == utcoffset);
   ck_assert (tm_getsecondsofday (aDate) == 2 * 3600 + 1800);
 
-  tm_addseconds (&aDate, 3600);
+  //tm_addseconds (&aDate, 3600);
+  ck_assert (tm_todaylightsavingextrasummertime (&aDate) == TM_ERROR);
+  ck_assert (tm_todaylightsavingextrawintertime (&aDate) == TM_OK);
   ck_assert (!tm_isdaylightsavingtime (aDate));
   ck_assert (tm_isdaylightsavingextrawintertime (aDate));
   ck_assert (!tm_isdaylightsavingextrasummertime (aDate));
@@ -527,7 +539,9 @@ START_TEST (tu_dst_winter)
   ck_assert (tm_getutcoffset (aDate) == utcoffset - 3600);
   ck_assert (tm_getsecondsofday (aDate) == 3 * 3600 + 1800);
 
-  tm_addseconds (&aDate, -3600);
+  //tm_addseconds (&aDate, -3600);
+  ck_assert (tm_todaylightsavingextrawintertime (&aDate) == TM_ERROR);
+  ck_assert (tm_todaylightsavingextrasummertime (&aDate) == TM_OK);
   ck_assert (tm_isdaylightsavingtime (aDate));
   ck_assert (!tm_isdaylightsavingextrawintertime (aDate));
   ck_assert (tm_isdaylightsavingextrasummertime (aDate));
