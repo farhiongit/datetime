@@ -1,48 +1,101 @@
 # datetime
 
+Introduction
+------------
+
 I have been looking for a simple library of functions in C to manage date and time in a POSIX framework,
 but could not find any that would meet my needs.
 
 That's the reason why I wrote this minimal set of functions, comparable to what DateTime offers for .Net
-(btw, DateTimeOffset in .Net is useless as it does not handle daylight saving time.)
+(btw, DateTimeOffset in .Net is useless as it does not handle daylight saving time.) or what ZonedDateTime offers in Java (but limited to local time zone only.)
 
 This library is a tool box that facilitates the management of dates and times. It is a superset of lower level POSIX functions.
 The functions of this toolbox manipulate instants (points) in time expressed as a date and time of day, in Gregorian calendar.
 
+Internal design
+---------------
+
 Instants are internally stored in the structure struct tm defined by POSIX, with a resolution of one second.
 This allows compatible access to low level POSIX functions, such as strftime() or strptime() (see man page of mktime()).
 
+Initializers
+------------
+
 However, objects struct tm should be considered as abstract data types, and should not be initializeed by hand.
+
 Instants should be initialized with tm_makelocal(), tm_makeutc(), tm_makenow() and tm_maketoday() instead.
-The use of these functions is compulsory, as well as easier than handling with \p struct \p tm.
+The use of these functions is compulsory, as well as easier than handling with struct tm.
+
+Modifiers
+---------
 
 Once initialized, tm_set(), tm_setdatefromstring(), tm_settimefromstring() can be used to modify the instant.
 
-Instants in time can be at will represented either in UTC or local time.
+Time representation
+-------------------
+
+Instants in time can be at will represented either in UTC or local time zone.
+This library handles UTC and local time zone, since POSIX can not manage any time zone without modifying environment variable (TZ).
+
 Functions tm_toutcrepresentation() and tm_tolocalrepresentation() allow to switch from one representation to the other.
 Functions tm_isutcrepresentation(), tm_islocalrepresentation() and tm_getrepresentation() permit to know the current representation of an instant in time.
-These functions do not affect the instant in time but only the way it is yield. One could think of it as the unit with which the instant is expressed.
+
+These functions **do not affect** the instant in time but only the way it is yield. One could think of it as the unit with which the instant is expressed.
+
+Daylight saving time
+--------------------
  
 Daylight saving time is taken into account in local time representation but is not applicable to UTC:
+
 - When local representation is used, calculations take daylight saving time rules into account.
 Days with DST change contain 23 or 25 hours when added or compared. 
 Local time is appropriate for acquisition or display in user interfaces of desktop applications.
 - On the contrary, in UTC, daylight saving time does not apply, and all days last 24 hours.
 
 Functions tm_isdaylightsavingtime(), tm_isdaylightsavingextrawintertime(), tm_isdaylightsavingextrasummertime()
-indicate whether or not Daylight saving time is in effect.
-Function tm_hasdaylightsavingtimerules() indicates whether or not daylight saving time rules apply in local timezone. 
+indicate whether or not Daylight saving time is in effect and whether or not local time is in the overlapping time interval between summer and winter.
 
-Functions for calculation are tm_add... and tm_diff....
+Functions tm_todaylightsavingextrawintertime(), tm_todaylightsavingextrasummertime() allow to set local time before
+(summer time) and after (winter time) daylight saving time cutoff during the overlapping time interval.
+Function tm_hasdaylightsavingtimerules() indicates whether or not daylight saving time rules apply in local timezone.
+
+Arithmetics
+-----------
+
+Functions for calculation on the date component are tm_adddays, tm_addmonths, tm_addyears, tm_diffdays, tm_diffweeks,
+tm_diffmonths and tm_diffyears.
+
+They operate on the local time-line, using the local date-time. For example, the period from noon on day 1 to noon
+the following day in days will always be counted as exactly one day, irrespective of whether there was a daylight savings
+change or not.
+
+Functions for calculation on the time component are tm_addseconds and tm_diffseconds.
+
+They units operate on the instant time-line. The calculation effectively converts both zoned date-times to instants and
+then calculates the period between the instants. For example, the period from noon on day 1 to noon the following day in
+hours may be 23, 24 or 25 hours (or some other amount) depending on whether there was a daylight savings change or not. 
+
 Functions for comparison are tm_compare() and tm_equals().
+
+Persistance
+-----------
+
 Functions for persistance are tm_tobinary() and tm_frombinary().
 
-Files :
+Files
+-----
+
 - Interface is described in dates.h and implementation in dates.c.
 - Use Makefile as an example for compilation.
-- File dates_tu_check.c implements unit tests using Check as the Unit Testing Framework for C (see https://libcheck.github.io/check/).
+- File dates_tu_check.c implements unit tests using Check as the Unit Testing Framework for C
+(see [https://libcheck.github.io/check/](https://libcheck.github.io/check/)).
 
+Detailed documentation
+----------------------
 
 Please read dates.h (or dates.pdf generated by Doxygen running makefile) for more details.
+
+Examples
+--------
 
 Look at dates_tu_check.c for examples of usage.
