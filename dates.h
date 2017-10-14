@@ -22,16 +22,16 @@
 /// Functions tm_toutcrepresentation() and tm_tolocalrepresentation() allow to switch from one representation to the other.
 /// Functions tm_isutcrepresentation(), tm_islocalrepresentation() and tm_getrepresentation() permit to know the current representation of an instant in time.
 /// These functions do not affect the instant in time but only the way it is yield. One could think of it as the unit with which the instant is expressed. 
-/// 
+///
 /// Daylight saving time is taken into account in local time representation but is not applicable to UTC:
 /// - When local representation is used, calculations take daylight saving time rules into account.
-/// Days with DST change contain 23 or 25 hours when added or compared. 
+/// Days with DST change contain 23 or 25 hours when added or compared.
 /// Local time is appropriate for acquisition or display in user interfaces of desktop applications.
 /// - On the contrary, in UTC, daylight saving time does not apply, and all days last 24 hours.
 ///
 /// Functions tm_isdaylightsavingtime(), tm_isdaylightsavingextrawintertime(), tm_isdaylightsavingextrasummertime()
 /// indicate whether or not Daylight saving time is in effect.
-/// Function tm_hasdaylightsavingtimerules() indicates whether or not daylight saving time rules apply in local timezone. 
+/// Function tm_hasdaylightsavingtimerules() indicates whether or not daylight saving time rules apply in local timezone.
 ///
 /// Functions for calculation are tm_add... and tm_diff....
 /// Functions for comparison are tm_compare() and tm_equals().
@@ -279,19 +279,23 @@ tm_status tm_trimtime (struct tm *date);
 /// Changes the zone offset to the earlier of the two valid offsets at a local time-line overlap.
 /// This function only has any effect when the local time-line overlaps, such as at an autumn daylight savings cutover.
 /// In this scenario, there are two valid offsets for the local date-time.
-/// Calling this method will return a local zoned date-time with the earlier of the two selected. 
+/// Calling this function will modify a local zoned date-time with the earlier of the two selected.
+/// This is only useful in very rare case to disambiguate an instant initialized from local date and time
+/// occuring during the overlapping period at an autumn daylight savings cutover.
 /// @param [in,out] date Broken-down time structure
 /// @returns TM_OK if instant was shifted, TM_ERROR otherwise.
-/// @remark Behavior depends on time representation.
+/// @remark Behavior depends on time representation. This function has no effect in UTC representation.
 tm_status tm_todaylightsavingextrasummertime (struct tm *date);
 
 /// Changes the zone offset to the later of the two valid offsets at a local time-line overlap.
 /// This function only has any effect when the local time-line overlaps, such as at an autumn daylight savings cutover.
 /// In this scenario, there are two valid offsets for the local date-time.
-/// Calling this method will return a local zoned date-time with the later of the two selected. 
+/// Calling this function will modify a local zoned date-time with the later of the two selected.
+/// This is only useful in very rare case to disambiguate an instant initialized from local date and time
+/// occuring during the overlapping period at an autumn daylight savings cutover.
 /// @param [in,out] date Broken-down time structure
 /// @returns TM_OK if instant was shifted, TM_ERROR otherwise.
-/// @remark Behavior depends on time representation.
+/// @remark Behavior depends on time representation. This function has no effect in UTC representation.
 tm_status tm_todaylightsavingextrawintertime (struct tm *date);
 
 ///@}
@@ -461,13 +465,13 @@ int tm_hasdaylightsavingtimerules (void);
 /// @remark Behavior depends on time representation. In UTC represntation, 0 is returned.
 int tm_isdaylightsavingtime (struct tm date);
 
-/// Indicates that date and time will be repeated after DST looses effect.
+/// Indicates that (local) date and time occurs during the overlapping period at DST cutoff and will be repeated after DST looses effect.
 /// @param [in] date Broken-down time structure
 /// @returns 1 if time is duplicated (before DST change), 0 otherwise.
 /// @remark Behavior depends on time representation.
 int tm_isdaylightsavingextrasummertime (struct tm date);
 
-/// Indicates that date and time has already occured before DST lost effect.
+/// Indicates that (local) date and time occurs during the overlapping period at DST cutoff and has already occured before DST lost effect.
 /// @param [in] date Broken-down time structure
 /// @returns 1 if time is duplicated (after DST change), 0 otherwise.
 /// @remark Behavior depends on time representation.
