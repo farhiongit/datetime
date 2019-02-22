@@ -1,5 +1,7 @@
 # datetime
 
+> This project allows to manage UTC and local date and time conveniently, with a correct handling of daylight saving time. It offers a complete set of functions for definition and calculation on date and time.
+
 Introduction
 ------------
 
@@ -35,12 +37,12 @@ Time representation
 -------------------
 
 Instants in time can be at will represented either in UTC or local time zone.
-This library handles UTC and local time zone, since POSIX can not manage any time zone without modifying environment variable (TZ).
+This library only handles UTC and local time zone, since POSIX can not manage any time zone without modifying environment variable (TZ).
 
 Functions tm_toutcrepresentation() and tm_tolocalrepresentation() allow to switch from one representation to the other.
 Functions tm_isutcrepresentation(), tm_islocalrepresentation() and tm_getrepresentation() permit to know the current representation of an instant in time.
 
-These functions **do not affect** the instant in time but only the way it is yield. One could think of it as the unit with which the instant is expressed.
+These functions **do not affect** the instant in time but only the way it is yielded. One could think of it as the unit with which the instant is expressed.
 
 Daylight saving time
 --------------------
@@ -65,13 +67,15 @@ Arithmetics
 Functions for calculation on the date component are tm_adddays, tm_addmonths, tm_addyears, tm_diffdays, tm_diffweeks,
 tm_diffmonths and tm_diffyears.
 
-They operate on the local time-line, using the local date-time. For example, the period from noon on day 1 to noon
+They operate either on UTC or on the local representation.
+
+In local representation, daylight saving time is handled propoerly. For example, the period from noon on day 1 to noon
 the following day in days will always be counted as exactly one day, irrespective of whether there was a daylight savings
 change or not.
 
 Functions for calculation on the time component are tm_addseconds and tm_diffseconds.
 
-They units operate on the instant time-line. The calculation effectively converts both zoned date-times to instants and
+They operate on the instant time-line. The calculation effectively converts both zoned date-times to instants and
 then calculates the period between the instants. For example, the period from noon on day 1 to noon the following day in
 hours may be 23, 24 or 25 hours (or some other amount) depending on whether there was a daylight savings change or not. 
 
